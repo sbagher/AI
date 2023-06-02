@@ -4,4 +4,7 @@ import networkx as nx
 G = nx.read_edgelist('email-Eu-core.txt', create_using=nx.DiGraph())
 
 # Q1: Number of nodes
-print('Q1: Number of nodes: ', len(G.nodes()))
+print('\nQ1: Number of nodes: ', len(G.nodes()))
+
+# Q2: Number of edges
+print('\nQ2: Number of edges:', len(G.edges()))
