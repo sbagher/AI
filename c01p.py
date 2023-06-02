@@ -127,6 +127,10 @@ else:
         print(f"\t{size}: {count}")
 
 # Q15: Number of bridge edges
-GU = G.to_undirected(as_view=True)
-bridges = list(nx.bridges(GU))
+G_undirected = G.to_undirected(as_view=True)
+bridges = list(nx.bridges(G_undirected))
 print(f"\nQ15: Number of bridge edges: {len(bridges)}")
+
+# Q16: Number of articulation nodes
+articulation_nodes = list(nx.articulation_points(G_undirected))
+print(f"\nQ16: Number of articulation nodes: {len(articulation_nodes)}")
