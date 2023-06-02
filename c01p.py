@@ -2,6 +2,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import random
 from collections import Counter
+import numpy as np
 
 # read the edges from the 'email-Eu-core.txt' file
 G = nx.read_edgelist('email-Eu-core.txt', create_using=nx.DiGraph())
@@ -157,3 +158,9 @@ random_nodes = random.sample(list(G.nodes()), 5)
 
 for node in random_nodes:
     print(f"\tClustering coefficient of node {node}: {nx.clustering(G, node)}")
+
+# Q20: Clustering coefficient distribution
+print('\nQ20: Clustering coefficient distribution')
+clustering_coeffs = nx.clustering(G)
+for node, coeff in sorted(clustering_coeffs.items()):
+        print(f"\t{node}: {coeff}")
