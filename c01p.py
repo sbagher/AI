@@ -41,11 +41,7 @@ print('\nQ6: Number of isolated nodes: ', len(isl))
 # Q7: In-degree distribution
 print('\nQ7: In-degree distribution')
 dgsq1 = [G.in_degree(n) for n in nx.nodes(G)]
-f1= [0 for d in range(max(dgsq1)+1)]
-for d in dgsq1:
-    f1[d] += 1
-
-plt.hist(f1, bins=max(f1)+1)
+plt.hist(dgsq1, bins=max(dgsq1))
 plt.title('In-Degree Histogram')
 plt.xlabel('In-Degree')
 plt.ylabel('Frequency')
@@ -54,16 +50,12 @@ plt.show()
 # Q8: Out-degree distribution
 print('\nQ8: Out-degree distribution')
 dgsq2 = [G.out_degree(n) for n in nx.nodes(G)]
-f2= [0 for d in range(max(dgsq2)+1)]
-for d in dgsq2:
-    f2[d] += 1
-
-plt.figure() 
-plt.hist(f2, bins=max(f2)+1)
+plt.hist(dgsq2, bins=max(dgsq2))
 plt.title('Out-Degree Histogram')
 plt.xlabel('Out-Degree')
 plt.ylabel('Frequency')
 plt.show()
+
 
 # Q9: Average degree, average in-degree and average out-degree
 print('\nQ9: Average degree, average in-degree and average out-degree')
