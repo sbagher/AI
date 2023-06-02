@@ -13,7 +13,7 @@ print('\nQ2: Number of edges:', len(G.edges()))
 # Q3: In-degree, out-degree and degree of the first five nodes
 print('\nQ3: In-degree, out-degree and degree of the first five nodes')
 for n in list(G.nodes)[0:5]:
-    print('node:', n, '{in-degree:', G.in_degree(n), 'out-degree:', G.out_degree(n), 'degree:', G.degree(n),"}")
+    print('\tnode:', n, '{in-degree:', G.in_degree(n), 'out-degree:', G.out_degree(n), 'degree:', G.degree(n),"}")
 
 # Q4: Number of source nodes
 src = []
@@ -63,3 +63,8 @@ plt.xlabel('Out-Degree')
 plt.ylabel('Frequency')
 plt.show()
 
+# Q9: Average degree, average in-degree and average out-degree
+print('\nQ9: Average degree, average in-degree and average out-degree')
+print("\tAverage degree: ", sum([G.degree(n) for n in nx.nodes(G)]) / len(G.nodes))
+print("\tAverage in-degree: ", sum([G.in_degree(n) for n in nx.nodes(G)]) / len(G.nodes))
+print("\tAverage out-degree: ", sum([G.out_degree(n) for n in nx.nodes(G)]) / len(G.nodes))
