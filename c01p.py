@@ -162,5 +162,6 @@ for node in random_nodes:
 # Q20: Clustering coefficient distribution
 print('\nQ20: Clustering coefficient distribution')
 clustering_coeffs = nx.clustering(G)
-for node, coeff in sorted(clustering_coeffs.items()):
+print(clustering_coeffs)
+for node, coeff in clustering_coeffs.items():
         print(f"\t{node}: {coeff}")
