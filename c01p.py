@@ -1,4 +1,5 @@
 import networkx as nx
+import matplotlib.pyplot as plt
 
 # read the edges from the 'email-Eu-core.txt' file
 G = nx.read_edgelist('email-Eu-core.txt', create_using=nx.DiGraph())
@@ -34,3 +35,21 @@ for n in G.nodes():
     if G.degree(n) == 0:
         isl.append(n)
 print('\nQ6: Number of isolated nodes: ', len(isl))
+
+# Q7: In-degree distribution
+print('\nQ7: In-degree distribution')
+indg = dict(G.in_degree())
+dgseq = []
+for n in G.nodes():
+    dgseq.append(indg.get(n,0))
+f= [0 for d in range(max(dgseq)+1)]
+for d in dgseq:
+    f[d] += 1
+print(f)
+plt.figure(figsize=(12, 8)) 
+plt.hist(f, bins=100)
+plt.title('In-Degree Histogram')
+plt.xlabel('In-Degree')
+plt.ylabel('Frequency')
+plt.show()
+
