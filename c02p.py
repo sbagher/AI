@@ -2,7 +2,11 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 G = nx.read_edgelist('soc-Epinions1.txt', create_using=nx.DiGraph())
+
+# Q22: Compute the in-degree and out-degree distributions and plot the power law for each of these distributions.
+print('\nQ22: Compute the in-degree and out-degree distributions and plot the power law for each of these distributions.')
 
 def run_in_out(in_out,color,lable):
     max_degree = max(in_out.values())
