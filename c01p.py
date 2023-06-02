@@ -104,3 +104,19 @@ for length, count in sorted(path_length_counts.items()):
 
 # Q12: Diameter
 print('\nQ12: Diameter:',max(path_length_counts))
+
+# Q13: Is the graph strongly connected? If so, compute the strongly connected component size distribution
+print('\nQ13: Is the graph strongly connected? If so, compute the strongly connected component size distribution\n')
+
+if nx.is_strongly_connected(G):
+    print("The graph is strongly connected.")
+else:
+    sccs = list(nx.strongly_connected_components(G))
+
+    scc_sizes = [len(scc) for scc in sccs]
+    scc_size_counts = Counter(scc_sizes)
+
+    print("The graph is not strongly connected. Strongly connected component size distribution:")
+    for size, count in sorted(scc_size_counts.items()):
+        print(f"\t{size}: {count}")
+
