@@ -125,3 +125,8 @@ else:
     print("The graph is not weakly connected. Weakly connected component size distribution:")
     for size, count in sorted(wcc_size_counts.items()):
         print(f"\t{size}: {count}")
+
+# Q15: Number of bridge edges
+GU = G.to_undirected(as_view=True)
+bridges = list(nx.bridges(GU))
+print(f"\nQ15: Number of bridge edges: {len(bridges)}")
