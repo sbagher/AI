@@ -134,3 +134,19 @@ print(f"\nQ15: Number of bridge edges: {len(bridges)}")
 # Q16: Number of articulation nodes
 articulation_nodes = list(nx.articulation_points(G_undirected))
 print(f"\nQ16: Number of articulation nodes: {len(articulation_nodes)}")
+
+# Q17: Number of nodes in In(v) for five random nodes
+print('\nQ17: Number of nodes in In(v) for five random nodes')
+random_nodes = random.sample(list(G.nodes()), 5)
+
+for node in random_nodes:
+    in_neighbors = G.predecessors(node)
+    print(f"\tNumber of nodes in In({node}): {len(list(in_neighbors))}")
+
+# Q18: Number of nodes in Out (v) for five random nodes
+print('\nQ18: Number of nodes in Out (v) for five random nodes')
+random_nodes = random.sample(list(G.nodes()), 5)
+
+for node in random_nodes:
+    out_neighbors = G.successors(node)
+    print(f"\tNumber of nodes in Out({node}): {len(list(out_neighbors))}")
