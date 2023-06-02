@@ -1,5 +1,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+import random
+from collections import Counter
 
 # read the edges from the 'email-Eu-core.txt' file
 G = nx.read_edgelist('email-Eu-core.txt', create_using=nx.DiGraph())
@@ -68,3 +70,37 @@ print('\nQ9: Average degree, average in-degree and average out-degree')
 print("\tAverage degree: ", sum([G.degree(n) for n in nx.nodes(G)]) / len(G.nodes))
 print("\tAverage in-degree: ", sum([G.in_degree(n) for n in nx.nodes(G)]) / len(G.nodes))
 print("\tAverage out-degree: ", sum([G.out_degree(n) for n in nx.nodes(G)]) / len(G.nodes))
+
+
+# Q10: Distance between five pairs of random nodes
+nodes = list(G.nodes)
+node_pairs = []
+for i in range(5):
+    pair = random.sample(nodes, 2)
+    node_pairs.append(tuple(pair))
+    
+print("\nQ10: Distance between five pairs of random nodes\n", node_pairs)
+
+for pair in node_pairs:
+    source, target = pair
+    try:
+        distance = nx.shortest_path_length(G, source=source, target=target)
+        print(f"Distance between nodes {source} and {target}: {distance}")
+    except nx.NodeNotFound as e:
+        print(f"Node not found: {e}")
+    except nx.NetworkXNoPath as e:
+        print(f"No path found: {e}")
+
+# Q11: Shortest path length distribution
+print('\nQ11: Shortest path length distribution')
+path_lengths = []
+for node in G.nodes:
+    lengths = nx.shortest_path_length(G, node)
+    path_lengths += list(lengths.values())
+
+path_length_counts = Counter(path_lengths)
+for length, count in sorted(path_length_counts.items()):
+    print(f"{length}: {count}")
+
+# Q12: Diameter
+print('\nQ12: Diameter:',max(path_length_counts))
