@@ -56,7 +56,6 @@ plt.xlabel('Out-Degree')
 plt.ylabel('Frequency')
 plt.show()
 
-
 # Q9: Average degree, average in-degree and average out-degree
 print('\nQ9: Average degree, average in-degree and average out-degree')
 print("\tAverage degree: ", sum([G.degree(n) for n in nx.nodes(G)]) / len(G.nodes))
