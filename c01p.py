@@ -27,3 +27,10 @@ for n in G.nodes():
     if G.out_degree(n) == 0:
         snk.append(n)
 print('\nQ5: Number of sink nodes: ', len(snk))
+
+# Q6: Number of isolated nodes
+isl = []
+for n in G.nodes():
+    if G.degree(n) == 0:
+        isl.append(n)
+print('\nQ6: Number of isolated nodes: ', len(isl))
