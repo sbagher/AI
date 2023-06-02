@@ -111,3 +111,17 @@ else:
     for size, count in sorted(scc_size_counts.items()):
         print(f"\t{size}: {count}")
 
+# Q14: Is the graph weakly connected? If so, compute the weakly connected component size distribution
+print('\nQ14: Is the graph weakly connected? If so, compute the weakly connected component size distribution\n')
+
+if nx.is_weakly_connected(G):
+    print("The graph is weakly connected.")
+else:
+    wccs = list(nx.weakly_connected_components(G))
+
+    wcc_sizes = [len(wcc) for wcc in wccs]
+    wcc_size_counts = Counter(wcc_sizes)
+
+    print("The graph is not weakly connected. Weakly connected component size distribution:")
+    for size, count in sorted(wcc_size_counts.items()):
+        print(f"\t{size}: {count}")
