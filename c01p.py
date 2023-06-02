@@ -150,3 +150,11 @@ random_nodes = random.sample(list(G.nodes()), 5)
 for node in random_nodes:
     out_neighbors = G.successors(node)
     print(f"\tNumber of nodes in Out({node}): {len(list(out_neighbors))}")
+
+# Q19: Clustering coefficient for five random nodes
+print('\nQ19: Clustering coefficient for five random nodes')
+random_nodes = random.sample(list(G.nodes()), 5)
+
+for node in random_nodes:
+    clustering_coeff = nx.clustering(G, node)
+    print(f"\tClustering coefficient of node {node}: {clustering_coeff}")
