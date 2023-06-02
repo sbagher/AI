@@ -165,3 +165,6 @@ clustering_coeffs = nx.clustering(G)
 print(clustering_coeffs)
 for node, coeff in clustering_coeffs.items():
         print(f"\t{node}: {coeff}")
+
+# Q21: Average clustering coefficient
+print(f"\nQ21: Average clustering coefficient: {nx.average_clustering(G)}")
