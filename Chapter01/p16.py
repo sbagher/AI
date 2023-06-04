@@ -34,4 +34,4 @@ for n in nodes:
         num_articulation_nodes += 1
     
 # print the number of bridge edges
-print(f"\tNumber of bridge edges: {num_articulation_nodes}")
+print(f"\tNumber of articulation nodes: {num_articulation_nodes}")
