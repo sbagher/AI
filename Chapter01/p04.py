@@ -5,7 +5,7 @@
 
 import networkx as nx
 
-# read the edges from the 'email-Eu-core.txt' file
+#  read the edges from the 'email-Eu-core.txt' file
 G = nx.read_edgelist('email-Eu-core.txt', create_using=nx.DiGraph())
 
 print('Problem: 04, Chapter: 01, Book: "Practical Social Network Analysis with Python"\n')
