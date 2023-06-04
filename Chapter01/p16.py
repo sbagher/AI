@@ -16,26 +16,22 @@ articulation_nodes = list(nx.articulation_points(UG))
 print(f"First Algorithm (Fast): Convert to undirected graph and use articulation_points() function)")
 print(f"\tNumber of articulation nodes: {len(articulation_nodes)}")
 
-"""
 # Algorithm #2
 # create weakly connected components
-print(f"Second Algorithm (Slow, Please waite...): Remvove each edge and check: is the new graph connected too?")
+print(f"Second Algorithm (Slow, Please waite...): Remove each node and check: is the new graph connected too?")
 
 nwccs = len(list(nx.weakly_connected_components(G)))
-num_bridge_edges = 0
-edges = list(G.edges())
+num_articulation_nodes = 0
+nodes = list(G.nodes())
 
-# iterate over edges and check if they are bridge edges
-for u, v in edges:
-    # remove edge (u, v) from the graph
-    G.remove_edge(u, v)
+# iterate over nodes and check if they are articulation nodes
+for n in nodes:
+    GT=G.copy()
+    GT.remove_node(n)
     
     # check if the graph is still weakly connected
-    if len(list(nx.weakly_connected_components(G))) != nwccs:
-        num_bridge_edges += 1
+    if len(list(nx.weakly_connected_components(GT))) != nwccs:
+        num_articulation_nodes += 1
     
-    # add edge (u, v) back to the graph
-    G.add_edge(u, v)
 # print the number of bridge edges
-print(f"\tNumber of bridge edges: {num_bridge_edges}")
-"""
+print(f"\tNumber of bridge edges: {num_articulation_nodes}")
