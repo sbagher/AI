@@ -13,7 +13,8 @@ G = nx.read_edgelist('soc-Epinions1.txt', create_using=nx.DiGraph(), comments='#
 print('Problem: 22, Chapter: 02, Book: "Practical Social Network Analysis with Python"\n')
 print('Compute the in-degree and out-degree distributions and plot the power law for each of these distributions.')
 
-def run_in_out(in_out,color,lable):
+def run_in_out(func,color,lable):
+    in_out = dict(func())
     max_degree = max(in_out.values())
     freq=np.zeros(max_degree + 1)
     for degree in in_out.values():
@@ -30,5 +31,5 @@ def run_in_out(in_out,color,lable):
     plt.grid(True)
     plt.show()
 
-run_in_out(dict(G.in_degree()),'bo','In')
-run_in_out(dict(G.out_degree()),'ro','Out')
+run_in_out(G.in_degree,'bo','In')
+run_in_out(G.out_degree,'ro','Out')
