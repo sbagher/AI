@@ -10,7 +10,7 @@ import random
 G = nx.read_edgelist('email-Eu-core.txt', create_using=nx.DiGraph())
 
 print('Problem: 20, Chapter: 01, Book: "Practical Social Network Analysis with Python"\n')
-print('\nClustering coefficient distribution')
+print('Clustering coefficient distribution')
 
 clustering_coeffs = nx.clustering(G)
 
