@@ -28,4 +28,4 @@ for pair in node_pairs:
     except nx.NodeNotFound as e:
         print(f"\t Node not found: {e}")
     except nx.NetworkXNoPath as e:
-        print(f"\t No path found: {e}")
+        print(f"\t No path found between nodes {source} and {target}")
