@@ -23,5 +23,6 @@ else:
     print("The graph is not weakly connected. Weakly connected component size distribution:")
     for size, count in sorted(wcc_size_counts.items()):
         print(f"\t{size}: {count}")
-print ("")
-n=G.nodes('808')
+
+if nx.is_connected(G):
+    print ("22222222222")
