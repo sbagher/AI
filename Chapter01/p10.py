@@ -18,14 +18,14 @@ for i in range(5):
     pair = random.sample(nodes, 2)
     node_pairs.append(tuple(pair))
 
-print("Nodes:\n\t", node_pairs)
+print(f"Nodes:\n\t{node_pairs}\nResult:")
 
 for pair in node_pairs:
     source, target = pair
     try:
         distance = nx.shortest_path_length(G, source=source, target=target)
-        print(f"Distance between nodes {source} and {target}: {distance}")
+        print(f"\t Distance between nodes {source} and {target}: {distance}")
     except nx.NodeNotFound as e:
-        print(f"Node not found: {e}")
+        print(f"\t Node not found: {e}")
     except nx.NetworkXNoPath as e:
-        print(f"No path found: {e}")
+        print(f"\t No path found: {e}")
