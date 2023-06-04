@@ -1,7 +1,7 @@
 # Name: Saeed Baghershahi
 # Student Number: 102501002
 # Class: AI Applications in Social Networks
-# Assignment: Problem: 13, Chapter: 01, Book: "Practical Social Network Analysis with Python"
+# Assignment: Problem: 14, Chapter: 01, Book: "Practical Social Network Analysis with Python"
 
 import networkx as nx
 from collections import Counter
@@ -9,8 +9,8 @@ from collections import Counter
 # read the edges from the 'email-Eu-core.txt' file
 G = nx.read_edgelist('email-Eu-core.txt', create_using=nx.DiGraph())
 
-print('Problem: 13, Chapter: 01, Book: "Practical Social Network Analysis with Python"\n')
-print('Is the graph strongly connected? If so, compute the strongly connected component size distribution')
+print('Problem: 14, Chapter: 01, Book: "Practical Social Network Analysis with Python"\n')
+print('Is the graph weakly connected? If so, compute the weakly connected component size distribution')
 
 if nx.is_strongly_connected(G):
     print("The graph is strongly connected.")
