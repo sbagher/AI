@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # read the edges from the 'soc-Epinions1.txt' file
-G = nx.read_edgelist('soc-Epinions1.txt', create_using=nx.DiGraph())
+G = nx.read_edgelist('soc-Epinions1.txt', create_using=nx.DiGraph(), comments='#')
 
 print('Problem: 22, Chapter: 02, Book: "Practical Social Network Analysis with Python"\n')
 print('Compute the in-degree and out-degree distributions and plot the power law for each of these distributions.')
