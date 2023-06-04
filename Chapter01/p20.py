@@ -4,6 +4,7 @@
 # Assignment: Problem: 20, Chapter: 01, Book: "Practical Social Network Analysis with Python"
 
 import networkx as nx
+import matplotlib.pyplot as plt
 
 # read the edges from the 'email-Eu-core.txt' file
 G = nx.read_edgelist('email-Eu-core.txt', create_using=nx.DiGraph())
@@ -19,6 +20,12 @@ for coeff in clustering_coeffs.values():
         counter[coeff]  += 1
     else:
         counter[coeff] = 1
+
+plt.hist(list(clustering_coeffs.values()), bins=max(list(counter.values())))
+plt.title('Clustering coefficient distribution')
+plt.xlabel('Clustering coefficient')
+plt.ylabel('Frequency')
+plt.show()
 
 for coeff, freq in sorted(counter.items()):
     print(f"\t{coeff}:\t{freq}")
