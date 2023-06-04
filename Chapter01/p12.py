@@ -17,4 +17,4 @@ for n in G.nodes:
     m=max(lengths.values())
     if m>diameter:
         diameter=m
-print('Diameter:',diameter)
+print('Diameter is',diameter)
