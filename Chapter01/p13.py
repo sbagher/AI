@@ -23,4 +23,3 @@ else:
     print("The graph is not strongly connected. Strongly connected component size distribution:")
     for size, count in sorted(scc_size_counts.items()):
         print(f"\t{size}: {count}")
-
