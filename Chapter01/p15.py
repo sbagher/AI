@@ -29,7 +29,7 @@ for u, v in edges:
     # remove edge (u, v) from the graph
     G.remove_edge(u, v)
     
-    # check if the graph is still weakly connected
+    # check if the number of weakly connected graph is changed?
     if len(list(nx.weakly_connected_components(G))) != nwccs:
         num_bridge_edges += 1
     
