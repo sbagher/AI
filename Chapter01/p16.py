@@ -18,7 +18,7 @@ print(f"\tNumber of articulation nodes: {len(articulation_nodes)}")
 
 # Algorithm #2
 # create weakly connected components
-print(f"Second Algorithm (Slow, Please waite...): Remove each node and check: is the new graph connected too?")
+print(f"Second Algorithm (Slow, Please waite...): Remove each node and check if the number of weakly connected graph is changed?")
 
 nwccs = len(list(nx.weakly_connected_components(G)))
 num_articulation_nodes = 0
@@ -29,7 +29,7 @@ for n in nodes:
     GT=G.copy()
     GT.remove_node(n)
     
-    # check if the graph is still weakly connected
+    # check if the number of weakly connected graph is changed?
     if len(list(nx.weakly_connected_components(GT))) != nwccs:
         num_articulation_nodes += 1
     
