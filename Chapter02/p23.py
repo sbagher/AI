@@ -5,6 +5,8 @@
 
 import networkx as nx
 import random
+import matplotlib.pyplot as plt
+import numpy as np
 
 # read the edges from the 'soc-Epinions1.txt' file
 G = nx.read_edgelist('soc-Epinions1.txt', create_using=nx.DiGraph(), comments='#')
@@ -16,10 +18,10 @@ covered in these BFS runs as shown in Fig. 2.7. Create one figure for the forwar
 and one for the backward BFS. Howmany nodes are in the OUT and IN components?\n\
 How many nodes are in the TENDRILS component?\n')
 
-random_nodes = random.sample(list(G.nodes()), 100)
+random_nodes = random.sample(list(G.nodes()), 10)
+inv, outv = [], []
 
 for node in random_nodes:
-    inv = list(nx.bfs_predecessors(G,node))
+    inv.append(len(list(nx.bfs_predecessors(G,node))))
+    outv.append(len(list(nx.bfs_successors(G,node))))
 
-    outv = list(nx.bfs_successors(G,node))
-    print(f"\tNumber of nodes in In({node}):\t{len(inv)} and in Out({node}):\t{len(outv)}")
