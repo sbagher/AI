@@ -18,7 +18,7 @@ print(f"\tNumber of bridge edges: {len(bridges)}")
 
 # Algorithm #2
 # create weakly connected components
-print(f"Second Algorithm (Slow, Please waite ...): Remove each edge and check: is the new graph connected too?")
+print(f"Second Algorithm (Slow, Please waite ...): Remove each edge and check if the number of weakly connected graph is changed?")
 
 nwccs = len(list(nx.weakly_connected_components(G)))
 num_bridge_edges = 0
