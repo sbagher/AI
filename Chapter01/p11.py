@@ -1,31 +1,22 @@
 # Name: Saeed Baghershahi
 # Student Number: 102501002
 # Class: AI Applications in Social Networks
-# Assignment: Problem: 10, Chapter: 01, Book: "Practical Social Network Analysis with Python"
+# Assignment: Problem: 11, Chapter: 01, Book: "Practical Social Network Analysis with Python"
 
 import networkx as nx
-import random
+from collections import Counter
 
 # read the edges from the 'email-Eu-core.txt' file
 G = nx.read_edgelist('email-Eu-core.txt', create_using=nx.DiGraph())
 
-print('Problem: 10, Chapter: 01, Book: "Practical Social Network Analysis with Python"\n')
-print('Distance between five pairs of random nodes')
+print('Problem: 11, Chapter: 01, Book: "Practical Social Network Analysis with Python"\n')
+print('Shortest path length distribution')
 
-nodes = list(G.nodes)
-node_pairs = []
-for i in range(5):
-    pair = random.sample(nodes, 2)
-    node_pairs.append(tuple(pair))
+path_lengths = []
+for n in G.nodes:
+    lengths = nx.shortest_path_length(G, n)
+    path_lengths += list(lengths.values())
 
-print(f"Nodes:\n\t{node_pairs}\nResult:")
-
-for pair in node_pairs:
-    source, target = pair
-    try:
-        distance = nx.shortest_path_length(G, source=source, target=target)
-        print(f"\t Distance between nodes {source} and {target}: {distance}")
-    except nx.NodeNotFound as e:
-        print(f"\t Node not found: {e}")
-    except nx.NetworkXNoPath as e:
-        print(f"\t No path found between nodes {source} and {target}")
+path_length_counts = Counter(path_lengths)
+for length, count in sorted(path_length_counts.items()):
+    print(f"\t{length}: {count}")
