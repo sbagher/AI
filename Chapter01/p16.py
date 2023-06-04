@@ -12,10 +12,11 @@ print('Problem: 16, Chapter: 01, Book: "Practical Social Network Analysis with P
 
 # Algorithm #1
 UG = G.to_undirected()
-bridges = list(nx.bridges(UG))
-print(f"First Algorithm (Fast): Convert to undirected graph and use bridges() function)")
-print(f"\tNumber of bridge edges: {len(bridges)}")
+articulation_nodes = list(nx.articulation_points(UG))
+print(f"First Algorithm (Fast): Convert to undirected graph and use articulation_points() function)")
+print(f"\tNumber of articulation nodes: {len(articulation_nodes)}")
 
+"""
 # Algorithm #2
 # create weakly connected components
 print(f"Second Algorithm (Slow, Please waite...): Remvove each edge and check: is the new graph connected too?")
@@ -37,3 +38,4 @@ for u, v in edges:
     G.add_edge(u, v)
 # print the number of bridge edges
 print(f"\tNumber of bridge edges: {num_bridge_edges}")
+"""
