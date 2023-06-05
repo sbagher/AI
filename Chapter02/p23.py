@@ -31,12 +31,24 @@ for scc in sccs:
         scc_set = scc
         max_scc_len=len(scc)
 
+def bfs_succ(G,node):
+    ps=list(nx.bfs_edges(G,node))
+    t=set()
+    for i,j in ps:
+        t|={j}
+    return t
+
+def bfs_pred(G,node):
+    ps=list(nx.bfs_edges(G,node,True))
+    t=set()
+    for i,j in ps:
+        t|={j}
+    return t
+
 for node in random_nodes:
-    bbfs_set = set(dict(nx.bfs_predecessors(G,node)).keys())
-    bbfs_set -= {node}
+    bbfs_set = bfs_pred(G,node)
     bbfs.append(len(bbfs_set))
-    fbfs_set = set(dict(nx.bfs_successors(G,node)).keys())
-    fbfs_set -= {node}
+    fbfs_set = bfs_succ(G,node)
     fbfs.append(len(fbfs_set))
     nodes_out |= fbfs_set
     nodes_in |= bbfs_set
