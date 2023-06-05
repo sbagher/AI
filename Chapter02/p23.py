@@ -25,14 +25,21 @@ nodes_out = set()
 nodes_in = set()
 
 sccs = list(nx.strongly_connected_components(G))
+max_scc_len=0
 for scc in sccs:
-    scc_set |= scc
+    if len(scc)>max_scc_len:
+        scc_set = scc
+        max_scc_len=len(scc)
 
 for node in random_nodes:
     bbfs_set = set(dict(nx.bfs_predecessors(G,node)).keys())
+    bbfs_set -= {node}
     bbfs.append(len(bbfs_set))
     fbfs_set = set(dict(nx.bfs_successors(G,node)).keys())
+    fbfs_set -= {node}
     fbfs.append(len(fbfs_set))
+    fbfs_set |= {node}
+    bbfs_set |= {node}
     nodes_out |= (fbfs_set - scc_set)
     nodes_in |= (bbfs_set - scc_set)
 
