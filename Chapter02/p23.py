@@ -6,7 +6,7 @@
 import networkx as nx
 import random
 import matplotlib.pyplot as plt
-import numpy as np
+from collections import Counter
 
 # read the edges from the 'soc-Epinions1.txt' file
 G = nx.read_edgelist('soc-Epinions1.txt', create_using=nx.DiGraph(), comments='#')
@@ -20,12 +20,21 @@ How many nodes are in the TENDRILS component?\n')
 
 random_nodes = random.sample(list(G.nodes()), 100)
 bbfs, fbfs = [], []
-bbfs_set = set()
-fbfs_set = set()
+scc_set = set()
+nodes_out = set()
+nodes_in = set()
+
+sccs = list(nx.strongly_connected_components(G))
+for scc in sccs:
+    scc_set |= scc
 
 for node in random_nodes:
-    bbfs.append(len(list(nx.bfs_predecessors(G,node))))
-    fbfs.append(len(list(nx.bfs_successors(G,node))))
+    bbfs_set = set(dict(nx.bfs_predecessors(G,node)).keys())
+    bbfs.append(len(bbfs_set))
+    fbfs_set = set(dict(nx.bfs_successors(G,node)).keys())
+    fbfs.append(len(fbfs_set))
+    nodes_out |= (fbfs_set - scc_set)
+    nodes_in |= (bbfs_set - scc_set)
 
 plt.figure(figsize=(10, 5))
 
@@ -33,7 +42,7 @@ plt.subplot(1, 2, 1)
 plt.plot(sorted(fbfs), color = 'blue')
 plt.xscale('linear')
 plt.yscale('log')
-plt.xlabel('Percent of Starting Nodes')
+plt.xlabel('Frac. (in percent) of Starting Nodes')
 plt.ylabel('Number of Nodes Reached')
 plt.title('Forward BFS')
 plt.grid(True)
@@ -42,9 +51,13 @@ plt.subplot(1, 2, 2)
 plt.plot(sorted(bbfs), color = 'maroon')
 plt.xscale('linear')
 plt.yscale('log')
-plt.xlabel('Percent of Starting Nodes')
+plt.xlabel('Frac. (in percent) of Starting Nodes')
 plt.ylabel('Number of Nodes Reached')
 plt.title('Backward BFS')
 plt.grid(True)
 
 plt.show()
+
+
+
+nodes_tendrils = len(adj_list) - num_nodes_out - num_nodes_in
