@@ -19,8 +19,9 @@ and one for the backward BFS. Howmany nodes are in the OUT and IN components?\n\
 How many nodes are in the TENDRILS component?\n')
 
 random_nodes = random.sample(list(G.nodes()), 100)
-bbfs = []
-fbfs =  []
+bbfs, fbfs = [], []
+bbfs_set = set()
+fbfs_set = set()
 
 for node in random_nodes:
     bbfs.append(len(list(nx.bfs_predecessors(G,node))))
