@@ -34,7 +34,7 @@ for scc in sccs:
 def bfs_succ(G,node):
     ps=list(nx.bfs_edges(G,node))
     t=set()
-    for i,j in ps:
+    for _,j in ps:
         t|={j}
     return t
 
