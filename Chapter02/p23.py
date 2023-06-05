@@ -18,18 +18,7 @@ covered in these BFS runs as shown in Fig. 2.7. Create one figure for the forwar
 and one for the backward BFS. Howmany nodes are in the OUT and IN components?\n\
 How many nodes are in the TENDRILS component?\n')
 
-def plot_BFS(covered_nodes,c,lable):
-    plt.figure(figsize=(5, 5))
-    plt.plot(covered_nodes, color = c)
-#    plt.plot(degree_prob, range(len(degree_prob)), color)
-    plt.xscale('linear')
-    plt.yscale('log')
-    plt.xlabel(f'{lable}-degree')
-    plt.ylabel('Probability')
-    plt.title(f'{lable}-degree Distribution')
-    plt.show()
-
-random_nodes = random.sample(list(G.nodes()), 10)
+random_nodes = random.sample(list(G.nodes()), 100)
 bbfs = []
 fbfs =  []
 
@@ -43,7 +32,7 @@ plt.subplot(1, 2, 1)
 plt.plot(sorted(fbfs), color = 'blue')
 plt.xscale('linear')
 plt.yscale('log')
-plt.xlabel('Number of Nodes')
+plt.xlabel('Number of Nodes (Percent)')
 plt.ylabel('Number of Nodes Reached')
 plt.title('Forward BFS')
 plt.grid(True)
@@ -52,7 +41,7 @@ plt.subplot(1, 2, 2)
 plt.plot(sorted(bbfs), color = 'maroon')
 plt.xscale('linear')
 plt.yscale('log')
-plt.xlabel('Number of Nodes')
+plt.xlabel('Number of Nodes (Percent)')
 plt.ylabel('Number of Nodes Reached')
 plt.title('Backward BFS')
 plt.grid(True)
