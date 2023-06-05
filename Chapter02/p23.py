@@ -18,29 +18,43 @@ covered in these BFS runs as shown in Fig. 2.7. Create one figure for the forwar
 and one for the backward BFS. Howmany nodes are in the OUT and IN components?\n\
 How many nodes are in the TENDRILS component?\n')
 
-random_nodes = random.sample(list(G.nodes()), 50)
-inv, outv = [], []
-
-for node in random_nodes:
-    inv.append(len(list(nx.bfs_predecessors(G,node))))
-    outv.append(len(list(nx.bfs_successors(G,node))))
-
-def plot_BFS(covered_nodes,color,lable):
-    max_covered_nodes = max(covered_nodes)
-    freq=np.zeros(max_covered_nodes + 1)
-    for covered_node in covered_nodes:
-        freq[covered_node] += 1
-    degree_prob=freq/sum(freq)
-    # Plot the in-degree distribution
-    plt.figure(figsize=(10, 5))
-    plt.plot(degree_prob, range(len(degree_prob)), color)
+def plot_BFS(covered_nodes,c,lable):
+    plt.figure(figsize=(5, 5))
+    plt.plot(covered_nodes, color = c)
+#    plt.plot(degree_prob, range(len(degree_prob)), color)
     plt.xscale('linear')
     plt.yscale('log')
     plt.xlabel(f'{lable}-degree')
     plt.ylabel('Probability')
     plt.title(f'{lable}-degree Distribution')
-    plt.grid(True)
     plt.show()
 
-plot_BFS (inv,'bo','In')
-plot_BFS (outv,'ro','Out')
+random_nodes = random.sample(list(G.nodes()), 10)
+bbfs = []
+fbfs =  []
+
+for node in random_nodes:
+    bbfs.append(len(list(nx.bfs_predecessors(G,node))))
+    fbfs.append(len(list(nx.bfs_successors(G,node))))
+
+plt.figure(figsize=(10, 5))
+
+plt.subplot(1, 2, 1)
+plt.plot(sorted(fbfs), color = 'blue')
+plt.xscale('linear')
+plt.yscale('log')
+plt.xlabel('Number of Nodes')
+plt.ylabel('Number of Nodes Reached')
+plt.title('Forward BFS')
+plt.grid(True)
+
+plt.subplot(1, 2, 2)
+plt.plot(sorted(bbfs), color = 'maroon')
+plt.xscale('linear')
+plt.yscale('log')
+plt.xlabel('Number of Nodes')
+plt.ylabel('Number of Nodes Reached')
+plt.title('Backward BFS')
+plt.grid(True)
+
+plt.show()
