@@ -38,12 +38,10 @@ for node in random_nodes:
     fbfs_set = set(dict(nx.bfs_successors(G,node)).keys())
     fbfs_set -= {node}
     fbfs.append(len(fbfs_set))
-    fbfs_set |= {node}
-    bbfs_set |= {node}
-    nodes_out |= (fbfs_set - scc_set)
-    nodes_in |= (bbfs_set - scc_set)
+    nodes_out |= fbfs_set
+    nodes_in |= bbfs_set
 
-plt.figure(figsize=(10, 5))
+plt.figure(figsize=(12, 5))
 
 plt.subplot(1, 2, 1)
 plt.plot(sorted(fbfs), color = 'blue')
@@ -65,6 +63,10 @@ plt.grid(True)
 
 plt.show()
 
+nodes_out -= scc_set
+nodes_in -= scc_set
 
-
-nodes_tendrils = len(adj_list) - num_nodes_out - num_nodes_in
+print("Nodes in biggest SCC component:", len(scc_set))
+print("Nodes in OUT component:", len(nodes_out))
+print("Nodes in IN component:", len(nodes_in))
+print("Nodes in TENDRILS component:", len(G.nodes())-len(scc_set)-len(nodes_out)-len(nodes_in))
