@@ -41,7 +41,7 @@ def bfs_succ(G,node):
 def bfs_pred(G,node):
     ps=list(nx.bfs_edges(G,node,True))
     t=set()
-    for i,j in ps:
+    for _,j in ps:
         t|={j}
     return t
 
