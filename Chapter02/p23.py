@@ -15,7 +15,7 @@ print('Problem: 23, Chapter: 02, Book: "Practical Social Network Analysis with P
 print('Choose 100 nodes at random from the network and do one forward and one\n\
 backward BFS traversal for each node. Plot the cumulative distributions of the nodes\n\
 covered in these BFS runs as shown in Fig. 2.7. Create one figure for the forward BFS\n\
-and one for the backward BFS. Howmany nodes are in the OUT and IN components?\n\
+and one for the backward BFS. How many nodes are in the OUT and IN components?\n\
 How many nodes are in the TENDRILS component?\n')
 
 random_nodes = random.sample(list(G.nodes()), 100)
