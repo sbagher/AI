@@ -21,7 +21,7 @@ print('Number of edges:', len(G.edges()))
 def SIRModel(G,I):
     b = 5
     g = 50
-    c = 0
+    c = -1
     S = G.nodes() - I
     R = set()
     while I:
@@ -35,16 +35,17 @@ def SIRModel(G,I):
                     c += 1
                     if v in I:
                         if c % b == 0:
-                            SP += u
-                            IP += u
+                            SP |= set(u)
+                            IP |= set(u)
             else:
                 if u in I:
                     c += 1
                     if c % g == 0:
-                        JP += u
-                        RP += u
+                        JP |= set(u)
+                        RP |= set(u)
         S -= SP
         I = (I|IP)-JP
         R |= RP
+    print("Saeed")
 
 SIRModel(G,{'1'})
