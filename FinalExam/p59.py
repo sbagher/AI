@@ -7,12 +7,44 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
 
-# read the edges from the 'com-dblp.ungraph.txt' file
-G = nx.read_edgelist('com-dblp.ungraph.txt', create_using=nx.DiGraph(), comments='#')
-
 print('Problem: 59, Chapter: 11, Book: "Practical Social Network Analysis with Python"\n')
 print('Repeat the experiments by initialising the infected set to be 10 random nodes \
 and the top 10 highest degree nodes, respectively. Calculate the total percentage of \
 nodes that became infected in each simulation.')
 
+# read the edges from the 'com-dblp.ungraph.txt' file
+G = nx.read_edgelist('com-dblp.ungraph.txt', create_using=nx.DiGraph(), comments='#')
+
+print('Number of nodes:', len(G.nodes()))
+print('Number of edges:', len(G.edges()))
+
 def SIRModel(G,I):
+    b = 5
+    g = 50
+    c = 0
+    S = G.nodes() - I
+    R = set()
+    while I:
+        SP = set()
+        IP = set()
+        JP = set()
+        RP = set()
+        for u in G.nodes():
+            if u in S:
+                for v in G.successors(u):
+                    c += 1
+                    if v in I:
+                        if c % b == 0:
+                            SP += u
+                            IP += u
+            else:
+                if u in I:
+                    c += 1
+                    if c % g == 0:
+                        JP += u
+                        RP += u
+        S -= SP
+        I = (I|IP)-JP
+        R |= RP
+
+SIRModel(G,{'1'})
