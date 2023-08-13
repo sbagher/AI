@@ -4,9 +4,7 @@
 # Assignment: Problem: 59, Chapter: 11, Book: "Practical Social Network Analysis with Python"
 
 import networkx as nx
-import matplotlib.pyplot as plt
 import random
-import numpy as np
 
 print('Problem: 59, Chapter: 11, Book: "Practical Social Network Analysis with Python"\n')
 print('Repeat the experiments by initialising the infected set to be 10 random nodes \
@@ -111,8 +109,7 @@ def prepare_run_show_result (G,gtype):
     for i in highest_degree_nodes:
         print(f"Node: {i}, in-degree: {G.in_degree(i)}, out-degree: {G.out_degree(i)}, degree: {G.degree(i)}")
 
-    print(f"Total percentage of nodes that became infected with 10 random nodes \
-    in each simulation in each graph")
+    print(f"Total percentage of nodes that became infected with 10 random nodes in each simulation in each graph")
 
     ir,_ = SIRModel_Book(G, random_nodes)
     ih,_ = SIRModel_Book(G, highest_degree_nodes)
@@ -120,5 +117,5 @@ def prepare_run_show_result (G,gtype):
 
 prepare_run_show_result(real_world_graph,"real world graph")
 prepare_run_show_result(random_graph,"random graph")
-prepare_run_show_result(preferential_attachment_graph,"preferential attachment graph")
+#prepare_run_show_result(preferential_attachment_graph,"preferential attachment graph")
 prepare_run_show_result(configuration_graph,"configuration graph")
