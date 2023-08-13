@@ -80,6 +80,7 @@ def SIRModel_Corrected(G,I):
 
 # read the edges from the 'com-dblp.ungraph.txt' file
 real_world_graph = nx.read_edgelist('com-dblp.ungraph.txt', create_using=nx.DiGraph(), comments='#')
+
 rw_n_nodes = len(real_world_graph.nodes())
 rw_n_edges = len(real_world_graph.edges())
 ind = [real_world_graph.in_degree(n) for n in nx.nodes(real_world_graph)]
@@ -87,22 +88,33 @@ outd = [real_world_graph.out_degree(n) for n in nx.nodes(real_world_graph)]
 d = [real_world_graph.degree(n) for n in nx.nodes(real_world_graph)]
 ds = sorted(d, reverse=True)
 ds = ds[:10]
-I = set()
+highest_degree_nodes = set()
 for n in nx.nodes(real_world_graph):
     if real_world_graph.degree(n) in ds:
-        I |= {n}
+        highest_degree_nodes |= {n}
 
 random_graph = nx.gnm_random_graph(rw_n_nodes,rw_n_edges,seed=10,directed=True)
 preferential_attachment_graph = nx.barabasi_albert_graph(rw_n_nodes,4,seed=10)
 configuration_graph = nx.directed_configuration_model (ind,outd,seed=10)
 
-print('Number of nodes:', len(configuration_graph.nodes()))
-print('Number of edges:', len(configuration_graph.edges()))
+random_nodes = set(random.sample(list(real_world_graph.nodes()), 10))
 
-random_nodes = random.sample(list(real_world_graph.nodes()), 100)
+print(f'real world graph (Nodes: {rw_n_nodes}, Edges: {rw_n_edges})')
+print(f'random graph (Nodes: {len(random_graph.nodes())}, Edges: {len(random_graph.edges())})')
+print(f'preferential attachment graph (Nodes: {len(preferential_attachment_graph.nodes())}, Edges: {len(preferential_attachment_graph.edges())})')
+print(f'configuration graph (Nodes: {len(configuration_graph.nodes())}, Edges: {len(configuration_graph.edges())})')
 
-print(f"Total percentage of nodes that became infected in each simulation")
-for i in range(1):
-    it,_ = SIRModel_Book(real_world_graph,{random_nodes[i]})
-    print(f"{i+1}: Real World Graph: {it/rw_n_nodes*100}")
-print(SIRModel_Corrected(real_world_graph,{random_nodes[1]}))
+print(f"10 random nodes:")
+for i in random_nodes:
+    print(f"Node: {i}, in-degree: {real_world_graph.in_degree(i)}, out-degree: {real_world_graph.out_degree(i)}, degree: {real_world_graph.degree(i)}")
+
+print(f"Top 10 highest degree nodes:")
+for i in highest_degree_nodes:
+    print(f"Node: {i}, in-degree: {real_world_graph.in_degree(i)}, out-degree: {real_world_graph.out_degree(i)}, degree: {real_world_graph.degree(i)}")
+
+it,_ = SIRModel_Book(real_world_graph, random_nodes)
+print(f"Total percentage of nodes that became infected with 10 random nodes \
+      in each simulation in each graph")
+print(f'real world graph: {it/rw_n_nodes*100}')
+
+print(SIRModel_Corrected(real_world_graph,highest_degree_nodes))
