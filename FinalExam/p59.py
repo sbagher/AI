@@ -13,17 +13,11 @@ print('Repeat the experiments by initialising the infected set to be 10 random n
 and the top 10 highest degree nodes, respectively. Calculate the total percentage of \
 nodes that became infected in each simulation.')
 
-# read the edges from the 'com-dblp.ungraph.txt' file
-G = nx.read_edgelist('com-dblp.ungraph.txt', create_using=nx.DiGraph(), comments='#')
-
-print('Number of nodes:', len(G.nodes()))
-print('Number of edges:', len(G.edges()))
-
 def SIRModel_Book(G,I):
     b = 20
     g = 2
-    c1 = 0
-    c2 = 0
+    c1 = random.choice(range(b))
+    c2 = random.choice(range(g))
     S = G.nodes() - I
     R = set()
     while I:
@@ -53,8 +47,8 @@ def SIRModel_Book(G,I):
 def SIRModel_Corrected(G,I):
     b = 5
     g = 50
-    c1 = random.choice([0, 1, 2, 3, 4])
-    c2 = random.choice([0, 1, 2, 3, 4])
+    c1 = random.choice(range(b))
+    c2 = random.choice(range(g))
     S = G.nodes() - I
     R = set()
     while I:
@@ -80,4 +74,11 @@ def SIRModel_Corrected(G,I):
         R |= RP
     print(len(R))
 
+# read the edges from the 'com-dblp.ungraph.txt' file
+G = nx.read_edgelist('com-dblp.ungraph.txt', create_using=nx.DiGraph(), comments='#')
+
+print('Number of nodes:', len(G.nodes()))
+print('Number of edges:', len(G.edges()))
+
+SIRModel_Book(G,{'0'})
 SIRModel_Corrected(G,{'0'})
