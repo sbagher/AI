@@ -5,6 +5,7 @@
 
 import networkx as nx
 import matplotlib.pyplot as plt
+import random
 import numpy as np
 
 print('Problem: 59, Chapter: 11, Book: "Practical Social Network Analysis with Python"\n')
@@ -18,7 +19,7 @@ G = nx.read_edgelist('com-dblp.ungraph.txt', create_using=nx.DiGraph(), comments
 print('Number of nodes:', len(G.nodes()))
 print('Number of edges:', len(G.edges()))
 
-def SIRModel(G,I):
+def SIRModel_Book(G,I):
     b = 20
     g = 2
     c1 = 0
@@ -32,20 +33,14 @@ def SIRModel(G,I):
         RP = set()
         for u in G.nodes():
             if u in S:
-                for v in G.neighbors(u):
+                for v in G.successors(u):
                     if v in I:
                         c1 += 1
                         if c1 % b == 0:
-                            SP |= set(u)
-                            IP |= set(u)
+                            SP |= {u}
+                            IP |= {u}
             else:
                 if u in I:
-                    for v in G.neighbors(u):
-                        if v in S:
-                            c1 += 1
-                            if c1 % b == 0:
-                                SP |= {v}
-                                IP |= {v}
                     c2 += 1
                     if c2 % g == 0:
                         JP |= {u}
@@ -55,7 +50,34 @@ def SIRModel(G,I):
         R |= RP
     print(len(R))
 
-g=set(G.neighbors('0'))
-print (g)
+def SIRModel_Corrected(G,I):
+    b = 5
+    g = 50
+    c1 = random.choice([0, 1, 2, 3, 4])
+    c2 = random.choice([0, 1, 2, 3, 4])
+    S = G.nodes() - I
+    R = set()
+    while I:
+        SP = set()
+        IP = set()
+        JP = set()
+        RP = set()
+        for i in I:
+            for n in set(G.neighbors(i)) | set(G.predecessors(i)) | set(G.successors(i)):
+                if n in S:
+                    c1 += 1
+                    if c1 == b:
+                        SP |= {n}
+                        IP |= {n}
+                        c1 = 0
+            c2 += 1
+            if c2 == g:
+                JP |= {i}
+                RP |= {i}
+                c2 = 0
+        S -= SP
+        I = (I|IP)-JP
+        R |= RP
+    print(len(R))
 
-SIRModel(G,{'0'})
+SIRModel_Corrected(G,{'0'})
