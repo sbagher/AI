@@ -112,9 +112,21 @@ print(f"Top 10 highest degree nodes:")
 for i in highest_degree_nodes:
     print(f"Node: {i}, in-degree: {real_world_graph.in_degree(i)}, out-degree: {real_world_graph.out_degree(i)}, degree: {real_world_graph.degree(i)}")
 
-it,_ = SIRModel_Book(real_world_graph, random_nodes)
 print(f"Total percentage of nodes that became infected with 10 random nodes \
-      in each simulation in each graph")
-print(f'real world graph: {it/rw_n_nodes*100}')
+in each simulation in each graph")
 
-print(SIRModel_Corrected(real_world_graph,highest_degree_nodes))
+ir,_ = SIRModel_Book(real_world_graph, random_nodes)
+ih,_ = SIRModel_Book(real_world_graph, highest_degree_nodes)
+print(f'real world graph with 10 nodes (random : {ir/rw_n_nodes*100}, highest degree: {ih/rw_n_nodes*100})')
+
+ir,_ = SIRModel_Book(random_graph, random_nodes)
+ih,_ = SIRModel_Book(random_graph, highest_degree_nodes)
+print(f'random graph with 10 nodes (random : {ir/rw_n_nodes*100}, highest degree: {ih/rw_n_nodes*100})')
+
+ir,_ = SIRModel_Book(preferential_attachment_graph, random_nodes)
+ih,_ = SIRModel_Book(preferential_attachment_graph, highest_degree_nodes)
+print(f'preferential attachment graph with 10 nodes (random : {ir/rw_n_nodes*100}, highest degree: {ih/rw_n_nodes*100})')
+
+ir,_ = SIRModel_Book(configuration_graph, random_nodes)
+ih,_ = SIRModel_Book(configuration_graph, highest_degree_nodes)
+print(f'configuration graph with 10 nodes (random : {ir/rw_n_nodes*100}, highest degree: {ih/rw_n_nodes*100})')
