@@ -85,7 +85,12 @@ rw_n_edges = len(real_world_graph.edges())
 ind = [real_world_graph.in_degree(n) for n in nx.nodes(real_world_graph)]
 outd = [real_world_graph.out_degree(n) for n in nx.nodes(real_world_graph)]
 d = [real_world_graph.degree(n) for n in nx.nodes(real_world_graph)]
-ds = sorted(d)
+ds = sorted(d, reverse=True)
+ds = ds[:10]
+I = set()
+for n in nx.nodes(real_world_graph):
+    if real_world_graph.degree(n) in ds:
+        I |= {n}
 
 random_graph = nx.gnm_random_graph(rw_n_nodes,rw_n_edges,seed=10,directed=True)
 preferential_attachment_graph = nx.barabasi_albert_graph(rw_n_nodes,4,seed=10)
