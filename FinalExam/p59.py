@@ -85,48 +85,40 @@ rw_n_nodes = len(real_world_graph.nodes())
 rw_n_edges = len(real_world_graph.edges())
 ind = [real_world_graph.in_degree(n) for n in nx.nodes(real_world_graph)]
 outd = [real_world_graph.out_degree(n) for n in nx.nodes(real_world_graph)]
-d = [real_world_graph.degree(n) for n in nx.nodes(real_world_graph)]
-ds = sorted(d, reverse=True)
-ds = ds[:10]
-highest_degree_nodes = set()
-for n in nx.nodes(real_world_graph):
-    if real_world_graph.degree(n) in ds:
-        highest_degree_nodes |= {n}
 
 random_graph = nx.gnm_random_graph(rw_n_nodes,rw_n_edges,seed=10,directed=True)
 preferential_attachment_graph = nx.barabasi_albert_graph(rw_n_nodes,4,seed=10)
 configuration_graph = nx.directed_configuration_model (ind,outd,seed=10)
 
-random_nodes = set(random.sample(list(real_world_graph.nodes()), 10))
+def prepare_run_show_result (G,gtype):
+    d = [G.degree(n) for n in nx.nodes(G)]
+    ds = sorted(d, reverse=True)
+    ds = ds[:10]
+    highest_degree_nodes = set()
+    for n in nx.nodes(G):
+        if G.degree(n) in ds:
+            highest_degree_nodes |= {n}
 
-print(f'real world graph (Nodes: {rw_n_nodes}, Edges: {rw_n_edges})')
-print(f'random graph (Nodes: {len(random_graph.nodes())}, Edges: {len(random_graph.edges())})')
-print(f'preferential attachment graph (Nodes: {len(preferential_attachment_graph.nodes())}, Edges: {len(preferential_attachment_graph.edges())})')
-print(f'configuration graph (Nodes: {len(configuration_graph.nodes())}, Edges: {len(configuration_graph.edges())})')
+    random_nodes = set(random.sample(list(G.nodes()), 10))
 
-print(f"10 random nodes:")
-for i in random_nodes:
-    print(f"Node: {i}, in-degree: {real_world_graph.in_degree(i)}, out-degree: {real_world_graph.out_degree(i)}, degree: {real_world_graph.degree(i)}")
+    print(f'{gtype} (Nodes: {len(G.nodes())}, Edges: {len(G.edges())})')
 
-print(f"Top 10 highest degree nodes:")
-for i in highest_degree_nodes:
-    print(f"Node: {i}, in-degree: {real_world_graph.in_degree(i)}, out-degree: {real_world_graph.out_degree(i)}, degree: {real_world_graph.degree(i)}")
+    print(f"10 random nodes:")
+    for i in random_nodes:
+        print(f"Node: {i}, in-degree: {G.in_degree(i)}, out-degree: {G.out_degree(i)}, degree: {G.degree(i)}")
 
-print(f"Total percentage of nodes that became infected with 10 random nodes \
-in each simulation in each graph")
+    print(f"Top 10 highest degree nodes:")
+    for i in highest_degree_nodes:
+        print(f"Node: {i}, in-degree: {G.in_degree(i)}, out-degree: {G.out_degree(i)}, degree: {G.degree(i)}")
 
-ir,_ = SIRModel_Book(real_world_graph, random_nodes)
-ih,_ = SIRModel_Book(real_world_graph, highest_degree_nodes)
-print(f'real world graph with 10 nodes (random : {ir/rw_n_nodes*100}, highest degree: {ih/rw_n_nodes*100})')
+    print(f"Total percentage of nodes that became infected with 10 random nodes \
+    in each simulation in each graph")
 
-ir,_ = SIRModel_Book(random_graph, random_nodes)
-ih,_ = SIRModel_Book(random_graph, highest_degree_nodes)
-print(f'random graph with 10 nodes (random : {ir/rw_n_nodes*100}, highest degree: {ih/rw_n_nodes*100})')
+    ir,_ = SIRModel_Book(G, random_nodes)
+    ih,_ = SIRModel_Book(G, highest_degree_nodes)
+    print(f'{gtype} with 10 nodes (random : {ir/len(G.nodes())*100}, highest degree: {ih/len(G.nodes())*100})')
 
-ir,_ = SIRModel_Book(preferential_attachment_graph, random_nodes)
-ih,_ = SIRModel_Book(preferential_attachment_graph, highest_degree_nodes)
-print(f'preferential attachment graph with 10 nodes (random : {ir/rw_n_nodes*100}, highest degree: {ih/rw_n_nodes*100})')
-
-ir,_ = SIRModel_Book(configuration_graph, random_nodes)
-ih,_ = SIRModel_Book(configuration_graph, highest_degree_nodes)
-print(f'configuration graph with 10 nodes (random : {ir/rw_n_nodes*100}, highest degree: {ih/rw_n_nodes*100})')
+prepare_run_show_result(real_world_graph,"real world graph")
+prepare_run_show_result(random_graph,"random graph")
+prepare_run_show_result(preferential_attachment_graph,"preferential attachment graph")
+prepare_run_show_result(configuration_graph,"configuration graph")
