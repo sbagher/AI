@@ -83,8 +83,8 @@ real_world_graph = nx.read_edgelist('com-dblp.ungraph.txt', create_using=nx.DiGr
 rw_n_nodes = len(real_world_graph.nodes())
 rw_n_edges = len(real_world_graph.edges())
 ind = [real_world_graph.in_degree(n) for n in nx.nodes(real_world_graph)]
-outd = [real_world_graph.in_degree(n) for n in nx.nodes(real_world_graph)]
-d = [real_world_graph.in_degree(n) for n in nx.nodes(real_world_graph)]
+outd = [real_world_graph.out_degree(n) for n in nx.nodes(real_world_graph)]
+d = [real_world_graph.degree(n) for n in nx.nodes(real_world_graph)]
 ds = sorted(d)
 
 random_graph = nx.gnm_random_graph(rw_n_nodes,rw_n_edges,seed=10,directed=True)
