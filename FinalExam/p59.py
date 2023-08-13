@@ -20,6 +20,7 @@ def SIRModel_Book(G,I):
     c2 = random.choice(range(g))
     S = G.nodes() - I
     R = set()
+    il = [len(I)]
     while I:
         SP = set()
         IP = set()
@@ -42,22 +43,24 @@ def SIRModel_Book(G,I):
         S -= SP
         I = (I|IP)-JP
         R |= RP
-    print(len(R))
+        il.append(len(I))
+    return len(R), il
 
 def SIRModel_Corrected(G,I):
-    b = 5
-    g = 50
+    b = 20
+    g = 2
     c1 = random.choice(range(b))
     c2 = random.choice(range(g))
     S = G.nodes() - I
     R = set()
+    il = [len(I)]
     while I:
         SP = set()
         IP = set()
         JP = set()
         RP = set()
         for i in I:
-            for n in set(G.neighbors(i)) | set(G.predecessors(i)) | set(G.successors(i)):
+            for n in set(G.successors(i)):
                 if n in S:
                     c1 += 1
                     if c1 == b:
@@ -72,13 +75,29 @@ def SIRModel_Corrected(G,I):
         S -= SP
         I = (I|IP)-JP
         R |= RP
-    print(len(R))
+        il.append(len(I))
+    return len(R), il
 
 # read the edges from the 'com-dblp.ungraph.txt' file
-G = nx.read_edgelist('com-dblp.ungraph.txt', create_using=nx.DiGraph(), comments='#')
+real_world_graph = nx.read_edgelist('com-dblp.ungraph.txt', create_using=nx.DiGraph(), comments='#')
+rw_n_nodes = len(real_world_graph.nodes())
+rw_n_edges = len(real_world_graph.edges())
+ind = [real_world_graph.in_degree(n) for n in nx.nodes(real_world_graph)]
+outd = [real_world_graph.in_degree(n) for n in nx.nodes(real_world_graph)]
+d = [real_world_graph.in_degree(n) for n in nx.nodes(real_world_graph)]
+ds = sorted(d)
 
-print('Number of nodes:', len(G.nodes()))
-print('Number of edges:', len(G.edges()))
+random_graph = nx.gnm_random_graph(rw_n_nodes,rw_n_edges,seed=10,directed=True)
+preferential_attachment_graph = nx.barabasi_albert_graph(rw_n_nodes,4,seed=10)
+configuration_graph = nx.directed_configuration_model (ind,outd,seed=10)
 
-SIRModel_Book(G,{'0'})
-SIRModel_Corrected(G,{'0'})
+print('Number of nodes:', len(configuration_graph.nodes()))
+print('Number of edges:', len(configuration_graph.edges()))
+
+random_nodes = random.sample(list(real_world_graph.nodes()), 100)
+
+print(f"Total percentage of nodes that became infected in each simulation")
+for i in range(1):
+    it,_ = SIRModel_Book(real_world_graph,{random_nodes[i]})
+    print(f"{i+1}: Real World Graph: {it/rw_n_nodes*100}")
+print(SIRModel_Corrected(real_world_graph,{random_nodes[1]}))
