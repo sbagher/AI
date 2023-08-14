@@ -58,7 +58,7 @@ def SIRModel_Corrected(G,I):
         JP = set()
         RP = set()
         for i in I:
-            for n in set(G.successors(i)):
+            for n in set(G.successors(i)) | set(G.predecessors(i)) | set(G.neighbors(i)):
                 if n in S:
                     c1 += 1
                     if c1 == b:
