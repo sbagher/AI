@@ -1,4 +1,4 @@
 # Name: Saeed Baghershahi
 # Student Number: 102501002
 # Class: AI Applications in Social Networks
-# Assignment: Problem: 36, Chapter: 03, Book: "Practical Social Network Analysis with Python"
+# Assignment: Problem: 36, Chapter: 04, Book: "Practical Social Network Analysis with Python"
