@@ -3,17 +3,19 @@
 # Class: AI Applications in Social Networks
 # Assignment: Problem: 39, Chapter: 05, Book: "Practical Social Network Analysis with Python"
 
-import networkx as nx
-import matplotlib.pyplot as plt
-import numpy as np
+import snap
 import time
 
 start_time = time.time()
 
 # read the edges from the 'com-friendster.ungraph.txt' file
-G = nx.read_edgelist('com-friendster.ungraph.txt', create_using=nx.DiGraph(), comments='#')
+Graph = snap.LoadEdgeList(snap.PNGraph, "com-friendster.ungraph.txt", 0, 1)
 
 end_time = time.time()
 elapsed_time = end_time - start_time
+
+f = open("demofile2.txt", "w")
+f.write(elapsed_time)
+f.close()
 
 print(elapsed_time)
