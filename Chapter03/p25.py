@@ -5,7 +5,9 @@
 
 import networkx as nx
 import matplotlib.pyplot as plt
-import numpy as np
+
+print('Problem: 25, Chapter: 03, Book: "Practical Social Network Analysis with Python"\n')
+print('Degree distributions\n')
 
 # read the edges from the 'CA-AstroPh.txt' file
 rwg = nx.read_edgelist('CA-AstroPh.txt', create_using=nx.DiGraph(), comments='#')
@@ -18,9 +20,15 @@ rg = nx.gnm_random_graph(rwg_nodes,rwg_edges,seed=10,directed=True)
 
 cg = nx.directed_configuration_model (ind,outd,seed=10)
 
-dgsq = [G.degree(n) for n in nx.nodes(G)]
-plt.hist(dgsq, bins=max(dgsq))
-plt.title('In-Degree Histogram')
-plt.xlabel('In-Degree')
-plt.ylabel('Frequency')
+plt.rcParams["figure.figsize"] = (15,5)
+def show_dist(g,i,t):
+    dgsq = [g.degree(n) for n in nx.nodes(g)]
+    plt.subplot(1, 3, i)
+    plt.hist(dgsq, bins=max(dgsq))
+    plt.title(f'Degree Distribution Histogram for \n{t}')
+    plt.xlabel('Degree')
+    plt.ylabel('Frequency')
+show_dist(rwg,1,"real world graph")
+show_dist(rg,2,"Erdös–Rényi random graph")
+show_dist(cg,3,"Conﬁguration model random graph")
 plt.show()
