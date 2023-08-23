@@ -4,7 +4,6 @@
 # Assignment: Problem: 26, Chapter: 03, Book: "Practical Social Network Analysis with Python"
 
 import networkx as nx
-import matplotlib.pyplot as plt
 
 print('Problem: 26, Chapter: 03, Book: "Practical Social Network Analysis with Python"\n')
 print('Conﬁguration model random graph: Generate a random instance of this model by using the graph in the dataset\n')
