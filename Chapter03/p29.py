@@ -18,7 +18,7 @@ rwg_edges = len(rwg.edges())
 ind = [rwg.in_degree(n) for n in nx.nodes(rwg)]
 outd = [rwg.out_degree(n) for n in nx.nodes(rwg)]
 
-rg = nx.erdos_renyi_graph(rwg_nodes,rwg_edges,seed=10,directed=True)
+rg = nx.gnm_random_graph(rwg_nodes,rwg_edges,seed=10,directed=True)
 
 cg = nx.directed_configuration_model (ind,outd,seed=10)
 
