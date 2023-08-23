@@ -21,13 +21,14 @@ outd = [rwg.out_degree(n) for n in nx.nodes(rwg)]
 rg = nx.gnm_random_graph(rwg_nodes,rwg_edges,seed=10,directed=True)
 
 cg = nx.directed_configuration_model (ind,outd,seed=10)
+cg = nx.DiGraph(cg)
 
 plt.rcParams["figure.figsize"] = (15,5)
 def show_dist(g,i,t):
     clustering_coeffs = nx.clustering(g)
     counter = {}
-    for t in np.arange(0, 1.1, 0.1):
-        counter[round(t,1)] = 0
+    for t1 in np.arange(0, 1.1, 0.1):
+        counter[round(t1,1)] = 0
 
     for coeff in clustering_coeffs.values():
         c = round(coeff,1)
