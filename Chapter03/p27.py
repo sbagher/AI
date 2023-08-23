@@ -3,11 +3,10 @@
 # Class: AI Applications in Social Networks
 # Assignment: Problem: 27, Chapter: 03, Book: "Practical Social Network Analysis with Python"
 
-
 import networkx as nx
 import matplotlib.pyplot as plt
 
-print('Problem: 25, Chapter: 03, Book: "Practical Social Network Analysis with Python"\n')
+print('Problem: 27, Chapter: 03, Book: "Practical Social Network Analysis with Python"\n')
 print('Degree distributions\n')
 
 # read the edges from the 'CA-AstroPh.txt' file
