@@ -5,10 +5,10 @@
 
 import networkx as nx
 import matplotlib.pyplot as plt
-from collections import Counter
+import numpy as np
 
-print('Problem: 26, Chapter: 03, Book: "Practical Social Network Analysis with Python"\n')
-print('WCC size distributions\n')
+print('Problem: 28, Chapter: 03, Book: "Practical Social Network Analysis with Python"\n')
+print('Shortest path length distributions\n')
 
 # read the edges from the 'CA-AstroPh.txt' file
 rwg = nx.read_edgelist('CA-AstroPh.txt', create_using=nx.DiGraph(), comments='#')
@@ -22,20 +22,24 @@ rg = nx.gnm_random_graph(rwg_nodes,rwg_edges,seed=10,directed=True)
 
 cg = nx.directed_configuration_model (ind,outd,seed=10)
 
-
 plt.rcParams["figure.figsize"] = (15,5)
 def show_dist(g,i,t):
-    wccs = list(nx.weakly_connected_components(g))
+    l=np.zeros(100,dtype=np.ulonglong)
+    for n in g.nodes:
+        lengths = nx.shortest_path_length(g, n)
+        for j in list(lengths.values()):
+            l[j] += 1
 
-    wcc_sizes = [len(wcc) for wcc in wccs]
-    wcc_size_counts = Counter(wcc_sizes)
-    l = map(str, wcc_size_counts.keys())
-    l = list(l)
+    maxl=0
+    for j in range (99,0,-1):
+        if l[j] != 0:
+            maxl=j
+            break
 
     plt.subplot(1, 3, i)
-    plt.bar(l, wcc_size_counts.values(), color ='blue', width = 0.4)
-    plt.title(f'WCC Size  Distribution Histogram for \n{t}')
-    plt.xlabel('WCC Size')
+    plt.bar(range (0,maxl), l[0:maxl], color ='maroon', width = 0.4)
+    plt.title(f'Shortest Path Length Distribution Histogram for \n{t}')
+    plt.xlabel('Path Length')
     plt.ylabel('Frequency')
 
 show_dist(rwg,1,"Real World Graph")
