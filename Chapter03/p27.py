@@ -5,9 +5,10 @@
 
 import networkx as nx
 import matplotlib.pyplot as plt
+import numpy as np
 
-print('Problem: 26, Chapter: 03, Book: "Practical Social Network Analysis with Python"\n')
-print('Shortest path length distributions\n')
+print('Problem: 27, Chapter: 03, Book: "Practical Social Network Analysis with Python"\n')
+print('Clustering coefﬁcient distributions\n')
 
 # read the edges from the 'CA-AstroPh.txt' file
 rwg = nx.read_edgelist('CA-AstroPh.txt', create_using=nx.DiGraph(), comments='#')
@@ -22,12 +23,12 @@ cg = nx.directed_configuration_model (ind,outd,seed=10)
 
 plt.rcParams["figure.figsize"] = (15,5)
 def show_dist(g,i,t):
-    clustering_coeffs = nx.clustering(g)
+    clustering_coeffs = round(nx.clustering(g),1)
     counter = {}
 
-    for coeff in round(clustering_coeffs.values(),1):
+    for coeff in clustering_coeffs.values():
         if coeff in counter.keys():
-            counter[coeff]  += 1
+            counter[coeff] += 1
         else:
             counter[coeff] = 1
 
