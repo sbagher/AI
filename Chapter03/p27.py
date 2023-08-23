@@ -26,8 +26,9 @@ plt.rcParams["figure.figsize"] = (15,5)
 def show_dist(g,i,t):
     clustering_coeffs = nx.clustering(g)
     counter = {}
-    for i in np.arange(0, 1.1, 0.1):
-        counter[round(i,1)] = 0
+    for t in np.arange(0, 1.1, 0.1):
+        counter[round(t,1)] = 0
+
     for coeff in clustering_coeffs.values():
         c = round(coeff,1)
         counter[c] += 1
@@ -37,7 +38,7 @@ def show_dist(g,i,t):
     plt.title(f'Clustering Coefficient Distribution Histogram for \n{t}')
     plt.xlabel('Path Length')
     plt.ylabel('Frequency')
-show_dist(rwg,1,"real world graph")
-show_dist(rg,2,"Erdös–Rényi random graph")
-show_dist(cg,3,"Conﬁguration model random graph")
+show_dist(rwg,1,"Real World Graph")
+show_dist(rg,2,"Erdös–Rényi Random Graph")
+show_dist(cg,3,"Conﬁguration Model Random Graph")
 plt.show()
