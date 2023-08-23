@@ -3,7 +3,6 @@
 # Class: AI Applications in Social Networks
 # Assignment: Problem: 26, Chapter: 03, Book: "Practical Social Network Analysis with Python"
 
-
 import networkx as nx
 import matplotlib.pyplot as plt
 
