@@ -36,7 +36,7 @@ def show_dist(g,i,t):
     plt.subplot(1, 3, i)
     plt.bar(np.arange(0, 1.1, 0.1), counter.values(), color ='green', width = 0.4)
     plt.title(f'Clustering Coefficient Distribution Histogram for \n{t}')
-    plt.xlabel('Path Length')
+    plt.xlabel('Clustering Coefficient')
     plt.ylabel('Frequency')
 show_dist(rwg,1,"Real World Graph")
 show_dist(rg,2,"Erdös–Rényi Random Graph")
