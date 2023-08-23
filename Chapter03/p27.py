@@ -26,14 +26,14 @@ plt.rcParams["figure.figsize"] = (15,5)
 def show_dist(g,i,t):
     clustering_coeffs = nx.clustering(g)
     counter = {}
-    for i in range (0,1,.1):
-        counter[i] = 0
+    for i in np.arange(0, 1.1, 0.1):
+        counter[round(i,1)] = 0
     for coeff in clustering_coeffs.values():
         c = round(coeff,1)
         counter[c] += 1
 
     plt.subplot(1, 3, i)
-    plt.bar(range (0,1,0.1), counter.values(), color ='green', width = 0.4)
+    plt.bar(np.arange(0, 1.1, 0.1), counter.values(), color ='green', width = 0.4)
     plt.title(f'Clustering Coefficient Distribution Histogram for \n{t}')
     plt.xlabel('Path Length')
     plt.ylabel('Frequency')
