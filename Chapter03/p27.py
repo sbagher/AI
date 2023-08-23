@@ -20,7 +20,7 @@ rg = nx.gnm_random_graph(rwg_nodes,rwg_edges,seed=10,directed=True)
 
 cg = nx.directed_configuration_model (ind,outd,seed=10)
 
-plt.rcParams["figure.figsize"] = (15,5)
+plt.rcParams["figure.figsize"] = (13,5)
 def show_dist(g,i,t):
     dgsq = [g.degree(n) for n in nx.nodes(g)]
     plt.subplot(1, 3, i)
