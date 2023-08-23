@@ -33,7 +33,7 @@ def show_dist(g,i,t):
 
     plt.subplot(1, 3, i)
     plt.bar(l, wcc_size_counts.values(), color ='blue', width = 0.4)
-    plt.title(f'WCC Size  Distribution Histogram for \n{t}')
+    plt.title(f'WCC Size Distribution Histogram for \n{t}')
     plt.xlabel('WCC Size')
     plt.ylabel('Frequency')
 
