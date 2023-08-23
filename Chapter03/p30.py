@@ -22,7 +22,6 @@ rg = nx.gnm_random_graph(rwg_nodes,rwg_edges,seed=10,directed=True)
 
 cg = nx.directed_configuration_model (ind,outd,seed=10)
 
-
 plt.rcParams["figure.figsize"] = (15,5)
 def show_dist(g,i,t):
     wccs = list(nx.weakly_connected_components(g))
