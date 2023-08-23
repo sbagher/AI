@@ -12,6 +12,7 @@ print('Clustering coefﬁcient distributions\n')
 
 # read the edges from the 'CA-AstroPh.txt' file
 rwg = nx.read_edgelist('CA-AstroPh.txt', create_using=nx.DiGraph(), comments='#')
+
 rwg_nodes = len(rwg.nodes())
 rwg_edges = len(rwg.edges())
 ind = [rwg.in_degree(n) for n in nx.nodes(rwg)]
@@ -23,23 +24,17 @@ cg = nx.directed_configuration_model (ind,outd,seed=10)
 
 plt.rcParams["figure.figsize"] = (15,5)
 def show_dist(g,i,t):
-    clustering_coeffs = round(nx.clustering(g),1)
+    clustering_coeffs = nx.clustering(g)
     counter = {}
-
+    for i in range (0,1,.1):
+        counter[i] = 0
     for coeff in clustering_coeffs.values():
-        if coeff in counter.keys():
-            counter[coeff] += 1
-        else:
-            counter[coeff] = 1
+        c = round(coeff,1)
+        counter[c] += 1
 
-    plt.hist(list(clustering_coeffs.values()), bins=max(list(counter.values())))
-    plt.title('Clustering coefficient distribution')
-    plt.xlabel('Clustering coefficient')
-    plt.ylabel('Frequency')
-    plt.show()
     plt.subplot(1, 3, i)
-    plt.hist(path_lengths, bins=max(path_lengths))
-    plt.title(f'Shortest Path Length Distribution Histogram for \n{t}')
+    plt.bar(range (0,1,0.1), counter.values(), color ='green', width = 0.4)
+    plt.title(f'Clustering Coefficient Distribution Histogram for \n{t}')
     plt.xlabel('Path Length')
     plt.ylabel('Frequency')
 show_dist(rwg,1,"real world graph")
