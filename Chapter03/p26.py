@@ -43,7 +43,7 @@ def show_dist(g,i,t):
     plt.xlabel('Path Length')
     plt.ylabel('Frequency')
 
-show_dist(rwg,1,"real world graph")
-show_dist(rg,2,"Erdös–Rényi random graph")
-show_dist(cg,3,"Conﬁguration model random graph")
+show_dist(rwg,1,"Real World Graph")
+show_dist(rg,2,"Erdös–Rényi Random Graph")
+show_dist(cg,3,"Conﬁguration Model Random Graph")
 plt.show()
