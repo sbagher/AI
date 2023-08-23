@@ -14,4 +14,4 @@ rwg = nx.read_edgelist('CA-AstroPh.txt', create_using=nx.DiGraph(), comments='#'
 rwg_nodes = len(rwg.nodes())
 rwg_edges = len(rwg.edges())
 
-rg = nx.erdos_renyi_graph(rwg_nodes,rwg_edges,seed=10,directed=True)
+rg = nx.erdos_renyi_graph(rwg_nodes,rwg_edges,directed=True)
