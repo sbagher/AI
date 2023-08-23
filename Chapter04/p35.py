@@ -3,13 +3,12 @@
 # Class: AI Applications in Social Networks
 # Assignment: Problem: 35, Chapter: 04, Book: "Practical Social Network Analysis with Python"
 
-
 import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
 
-print('Problem: 34, Chapter: 04, Book: "Practical Social Network Analysis with Python"\n')
-print('Short path length distribution\n')
+print('Problem: 35, Chapter: 04, Book: "Practical Social Network Analysis with Python"\n')
+print('Clustering coefﬁcient distributions\n')
 
 # read the edges from the 'CA-AstroPh.txt' file
 rwg = nx.read_edgelist('CA-GrQc.txt', create_using=nx.DiGraph(), comments='#')
@@ -20,22 +19,19 @@ swg = nx.watts_strogatz_graph(rwg_nodes, 5, 0.5, seed=10)
 
 plt.rcParams["figure.figsize"] = (15,5)
 def show_dist(g,i,t):
-    l=np.zeros(100,dtype=np.ulonglong)
-    for n in g.nodes:
-        lengths = nx.shortest_path_length(g, n)
-        for j in list(lengths.values()):
-            l[j] += 1
+    clustering_coeffs = nx.clustering(g)
+    counter = {}
+    for t1 in np.arange(0, 1.1, 0.1):
+        counter[round(t1,1)] = 0
 
-    maxl=0
-    for j in range (99,0,-1):
-        if l[j] != 0:
-            maxl=j
-            break
+    for coeff in clustering_coeffs.values():
+        c = round(coeff,1)
+        counter[c] += 1
 
     plt.subplot(1, 2, i)
-    plt.bar(range (0,maxl), l[0:maxl], color ='maroon', width = 0.4)
-    plt.title(f'Shortest Path Length Distribution Histogram for \n{t}')
-    plt.xlabel('Path Length')
+    plt.bar(np.arange(0, 1.1, 0.1), counter.values(), color ='green', width = 0.4)
+    plt.title(f'Clustering Coefficient Distribution Histogram for \n{t}')
+    plt.xlabel('Clustering Coefficient')
     plt.ylabel('Frequency')
 
 show_dist(rwg,1,"Real World Graph")
