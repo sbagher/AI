@@ -3,19 +3,26 @@
 # Class: AI Applications in Social Networks
 # Assignment: Problem: 39, Chapter: 05, Book: "Practical Social Network Analysis with Python"
 
-import snap
-import time
+import networkx as nx
+import matplotlib.pyplot as plt
 
-start_time = time.time()
+print('Problem: 39, Chapter: 05, Book: "Practical Social Network Analysis with Python"\n')
+print('Degree distribution\n')
 
-# read the edges from the 'com-friendster.ungraph.txt' file
-Graph = snap.LoadEdgeList(snap.PNGraph, "com-friendster.ungraph.txt", 0, 1)
+# Read the edges from the 'com-dblp.ungraph.txt' instead of 'com-friendster.ungraph.txt' file,
+# because friendster dataset needs huge memory and computing. Two mentioned files have 
+# same characteristics (see https://snap.stanford.edu/data/index.html part "Networks with ground-truth communities")
+# It seems that friendster dataset needs GraphX on Hadoop or Spark. So it can not run on my laptop!
+rwg = nx.read_edgelist('com-dblp.ungraph.txt', create_using=nx.DiGraph(), comments='#')
 
-end_time = time.time()
-elapsed_time = end_time - start_time
+plt.rcParams["figure.figsize"] = (10,5)
+def show_dist(g,i,t):
+    dgsq = [g.degree(n) for n in nx.nodes(g)]
+    plt.subplot(1, 1, i)
+    plt.hist(dgsq, bins=max(dgsq), color ='red')
+    plt.title(f'Degree Distribution Histogram for \n{t}')
+    plt.xlabel('Degree')
+    plt.ylabel('Frequency')
 
-f = open("demofile2.txt", "w")
-f.write(elapsed_time)
-f.close()
-
-print(elapsed_time)
+show_dist(rwg,1,"DBLP collaboration network")
+plt.show()
