@@ -19,6 +19,7 @@ d = [rwg.degree(n) for n in nx.nodes(rwg)]
 rg = nx.gnm_random_graph(rwg_nodes,rwg_edges,seed=10,directed=False)
 
 cg = nx.configuration_model (d,seed=10)
+cg = nx.Graph(cg)
 
 plt.rcParams["figure.figsize"] = (15,5)
 def show_dist(g,i,t):
