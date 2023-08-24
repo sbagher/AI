@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 print('Problem: 40, Chapter: 05, Book: "Practical Social Network Analysis with Python"\n')
-print('Shortest path length distribution\n')
+print('Clustering coefﬁcient distributions\n')
 
 # Read the edges from the 'ca-HepPh.txt' instead of 'com-friendster.ungraph.txt' file,
 # because friendster dataset needs huge memory and computing. Two mentioned files have 
@@ -18,22 +18,19 @@ rwg = nx.read_edgelist('ca-HepPh.txt', create_using=nx.DiGraph(), comments='#')
 
 plt.rcParams["figure.figsize"] = (10,5)
 def show_dist(g,i,t):
-    l=np.zeros(100,dtype=np.ulonglong)
-    for n in g.nodes:
-        lengths = nx.shortest_path_length(g, n)
-        for j in list(lengths.values()):
-            l[j] += 1
+    clustering_coeffs = nx.clustering(g)
+    counter = {}
+    for t1 in np.arange(0, 1.1, 0.1):
+        counter[round(t1,1)] = 0
 
-    maxl=0
-    for j in range (99,0,-1):
-        if l[j] != 0:
-            maxl=j
-            break
+    for coeff in clustering_coeffs.values():
+        c = round(coeff,1)
+        counter[c] += 1
 
-    plt.subplot(1, 1, i)
-    plt.bar(range (0,maxl), l[0:maxl], color ='maroon', width = 0.4)
-    plt.title(f'Shortest Path Length Distribution Histogram for \n{t}')
-    plt.xlabel('Path Length')
+    plt.subplot(1, 2, i)
+    plt.bar(np.arange(0, 1.1, 0.1), counter.values(), color ='green', width = 0.4)
+    plt.title(f'Clustering Coefficient Distribution Histogram for \n{t}')
+    plt.xlabel('Clustering Coefficient')
     plt.ylabel('Frequency')
 
 show_dist(rwg,1,"(High Energy Physics - Phenomenology) collaboration network dataset")
