@@ -38,7 +38,7 @@ def show_dist(g,i,t):
     plt.plot(ax1, ax2, color ='green', linewidth=1)
     plt.title(f'K-Core Node Size for \n{t}')
     plt.xlabel('K in K-Core')
-    plt.ylabel('Number of Nodes')
+    plt.ylabel('Number of Nodes in K-Core')
 
     for j in range (rwg_nodes,0,-1):
         if l[j] != 0:
