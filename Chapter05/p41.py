@@ -25,7 +25,7 @@ def show_dist(g,i,t):
     l = map(str, wcc_size_counts.keys())
     l = list(l)
 
-    plt.subplot(1, 2, i)
+    plt.subplot(1, 1, i)
     plt.bar(l, wcc_size_counts.values(), color ='blue', width = 0.4)
     plt.title(f'WCC Size Distribution Histogram for \n{t}')
     plt.xlabel('WCC Size')
