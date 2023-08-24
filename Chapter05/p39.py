@@ -13,7 +13,7 @@ print('Degree distribution\n')
 # because friendster dataset needs huge memory and computing. Two mentioned files have 
 # same characteristics (see https://snap.stanford.edu/data/index.html part "Networks with ground-truth communities")
 # It seems that friendster dataset needs GraphX on Hadoop or Spark. So it can not run on my laptop!
-rwg = nx.read_edgelist('CA-HepTh.txt', create_using=nx.Graph(), comments='#')
+rwg = nx.read_edgelist('CA-HepTh.txt', create_using=nx.DiGraph(), comments='#')
 
 plt.rcParams["figure.figsize"] = (10,5)
 def show_dist(g,i,t):
