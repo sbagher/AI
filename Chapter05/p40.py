@@ -8,13 +8,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 print('Problem: 40, Chapter: 05, Book: "Practical Social Network Analysis with Python"\n')
-print('Short path length distribution\n')
+print('Shortest path length distribution\n')
 
 # Read the edges from the 'com-dblp.ungraph.txt' instead of 'com-friendster.ungraph.txt' file,
 # because friendster dataset needs huge memory and computing. Two mentioned files have 
 # same characteristics (see https://snap.stanford.edu/data/index.html part "Networks with ground-truth communities")
 # It seems that friendster dataset needs GraphX on Hadoop or Spark. So it can not run on my laptop!
-rwg = nx.read_edgelist('com-dblp.ungraph.txt', create_using=nx.DiGraph(), comments='#')
+rwg = nx.read_edgelist('com-dblp.ungraph.txt', create_using=nx.Graph(), comments='#')
 
 plt.rcParams["figure.figsize"] = (15,5)
 def show_dist(g,i,t):
