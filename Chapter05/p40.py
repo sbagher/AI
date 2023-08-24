@@ -7,8 +7,8 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
 
-print('Problem: 39, Chapter: 05, Book: "Practical Social Network Analysis with Python"\n')
-print('Degree distribution\n')
+print('Problem: 40, Chapter: 05, Book: "Practical Social Network Analysis with Python"\n')
+print('Short path length distribution\n')
 
 # Read the edges from the 'com-dblp.ungraph.txt' instead of 'com-friendster.ungraph.txt' file,
 # because friendster dataset needs huge memory and computing. Two mentioned files have 
