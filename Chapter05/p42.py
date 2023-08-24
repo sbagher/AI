@@ -7,7 +7,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
 
-print('Problem: 40, Chapter: 05, Book: "Practical Social Network Analysis with Python"\n')
+print('Problem: 42, Chapter: 05, Book: "Practical Social Network Analysis with Python"\n')
 print('Clustering coefﬁcient distributions\n')
 
 # Read the edges from the 'ca-HepPh.txt' instead of 'com-friendster.ungraph.txt' file,
@@ -27,7 +27,7 @@ def show_dist(g,i,t):
         c = round(coeff,1)
         counter[c] += 1
 
-    plt.subplot(1, 2, i)
+    plt.subplot(1, 1, i)
     plt.bar(np.arange(0, 1.1, 0.1), counter.values(), color ='green', width = 0.4)
     plt.title(f'Clustering Coefficient Distribution Histogram for \n{t}')
     plt.xlabel('Clustering Coefficient')
