@@ -19,6 +19,22 @@ rwg.remove_edges_from(nx.selfloop_edges(rwg))
 
 plt.rcParams["figure.figsize"] = (10,5)
 def show_dist(g,i,t):
+    fof1,fof2 = {}, {}
+
+    for n1 in g.nodes:
+        nbs1 = set(g.neighbors(n1))
+        nbs1.remove(n1)
+        nbs3 = set()
+        out = 0
+        for n2 in nbs1:
+            nbs2 = set(g.neighbors(n2))
+            nbs2.remove(n1)
+            out += len(nbs2)
+            nbs3 |= nbs2
+
+        fof1[n1] = len(nbs3)
+        fof2[n1] = out
+
     dgc = dict(nx.core_number(g))
     dgc = set(dgc.values())
     dgc = sorted(dgc)
