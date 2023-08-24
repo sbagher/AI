@@ -16,7 +16,7 @@ print('WCC size distributions\n')
 # It seems that friendster dataset needs GraphX on Hadoop or Spark. So it can not run on my laptop!
 rwg = nx.read_edgelist('ca-HepPh.txt', create_using=nx.DiGraph(), comments='#')
 
-plt.rcParams["figure.figsize"] = (15,5)
+plt.rcParams["figure.figsize"] = (10,5)
 def show_dist(g,i,t):
     wccs = list(nx.weakly_connected_components(g))
 
