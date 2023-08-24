@@ -9,11 +9,11 @@ import matplotlib.pyplot as plt
 print('Problem: 39, Chapter: 05, Book: "Practical Social Network Analysis with Python"\n')
 print('Degree distribution\n')
 
-# Read the edges from the 'com-dblp.ungraph.txt' instead of 'com-friendster.ungraph.txt' file,
+# Read the edges from the 'CA-HepTh.txt' instead of 'com-friendster.ungraph.txt' file,
 # because friendster dataset needs huge memory and computing. Two mentioned files have 
 # same characteristics (see https://snap.stanford.edu/data/index.html part "Networks with ground-truth communities")
 # It seems that friendster dataset needs GraphX on Hadoop or Spark. So it can not run on my laptop!
-rwg = nx.read_edgelist('com-dblp.ungraph.txt', create_using=nx.Graph(), comments='#')
+rwg = nx.read_edgelist('CA-HepTh.txt', create_using=nx.Graph(), comments='#')
 
 plt.rcParams["figure.figsize"] = (10,5)
 def show_dist(g,i,t):
