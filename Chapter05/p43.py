@@ -19,25 +19,29 @@ rwg.remove_edges_from(nx.selfloop_edges(rwg))
 
 plt.rcParams["figure.figsize"] = (10,5)
 def show_dist(g,i,t):
-    dgsq = [g.degree(n) for n in nx.nodes(g)]
-    dgsqm = max(dgsq)
-    rwg_nodes = len(rwg.nodes())
-    l=np.zeros(rwg_nodes,dtype=np.ulonglong)
-    for j in range (dgsqm,2,-1):
-        gt = nx.k_core(g, j)
-        if gt:
-            l[len(gt.nodes())] += 1
+    dgc = dict(nx.core_number(g))
+    dgc = set(dgc.values())
+    dgc = sorted(dgc, reverse=True)
+    dgsqm = max(dgc)
+    rwg_nodes = len(g.nodes())
+    l=np.zeros(rwg_nodes+1,dtype=np.int32)
 
-    maxl=0
-    for j in range (dgsqm,2,-1):
+    for j in dgc:
+        gt = nx.k_core(g, k=j)
+        ll=len(gt.nodes())
+        if ll!=0:
+            l[ll] += 1
+
+    ax1, ax2 = [], []
+    for j in range (0,rwg_nodes,1):
         if l[j] != 0:
-            maxl=j
-            break
+            ax1.append(j)
+            ax2.append(l[j])
 
     plt.subplot(1, 1, i)
-    plt.bar(range (0,maxl), l[0:maxl], color ='maroon', width = 0.4)
+    plt.plot(ax1, ax2, color ='yellow', linewidth=3)
     plt.title(f'K-Core Node Size Distribution Histogram for \n{t}')
-    plt.xlabel('Path Length')
+    plt.xlabel('Number of Nodes in K-Core')
     plt.ylabel('Frequency')
 
 show_dist(rwg,1,"(High Energy Physics - Phenomenology) collaboration network dataset")
