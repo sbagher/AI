@@ -21,8 +21,7 @@ plt.rcParams["figure.figsize"] = (10,5)
 def show_dist(g,i,t):
     dgc = dict(nx.core_number(g))
     dgc = set(dgc.values())
-    dgc = sorted(dgc, reverse=True)
-    dgsqm = max(dgc)
+    dgc = sorted(dgc)
     rwg_nodes = len(g.nodes())
     l=np.zeros(rwg_nodes+1,dtype=np.int32)
 
@@ -33,13 +32,13 @@ def show_dist(g,i,t):
             l[ll] += 1
 
     ax1, ax2 = [], []
-    for j in range (0,rwg_nodes,1):
+    for j in range (rwg_nodes,0,-1):
         if l[j] != 0:
             ax1.append(j)
             ax2.append(l[j])
 
     plt.subplot(1, 1, i)
-    plt.plot(ax1, ax2, color ='yellow', linewidth=3)
+    plt.plot(ax1, ax2, color ='red', linewidth=3)
     plt.title(f'K-Core Node Size Distribution Histogram for \n{t}')
     plt.xlabel('Number of Nodes in K-Core')
     plt.ylabel('Frequency')
