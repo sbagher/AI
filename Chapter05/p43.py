@@ -25,23 +25,31 @@ def show_dist(g,i,t):
     rwg_nodes = len(g.nodes())
     l=np.zeros(rwg_nodes+1,dtype=np.int32)
 
+    ax1, ax2, ax3, ax4 = [], [], [], []
     for j in dgc:
         gt = nx.k_core(g, k=j)
         ll=len(gt.nodes())
         if ll!=0:
             l[ll] += 1
+            ax1.append(j)
+            ax2.append(ll)
 
-    ax1, ax2 = [], []
+    plt.subplot(1, 2, 1)
+    plt.plot(ax1, ax2, color ='green', linewidth=1)
+    plt.title(f'K-Core Node Size for \n{t}')
+    plt.xlabel('K in K-Core')
+    plt.ylabel('Number of Nodes')
+
     for j in range (rwg_nodes,0,-1):
         if l[j] != 0:
-            ax1.append(j)
-            ax2.append(l[j])
+            ax3.append(j)
+            ax4.append(l[j])
 
-    plt.subplot(1, 1, i)
-    plt.plot(ax1, ax2, color ='red', linewidth=3)
+    plt.subplot(1, 2, 2)
+    plt.plot(ax3, ax4, color ='red', linewidth=1)
     plt.title(f'K-Core Node Size Distribution Histogram for \n{t}')
     plt.xlabel('Number of Nodes in K-Core')
     plt.ylabel('Frequency')
 
-show_dist(rwg,1,"(High Energy Physics - Phenomenology) collaboration network dataset")
+show_dist(rwg,1,"(High Energy Physics - Phenomenology)\ncollaboration network dataset")
 plt.show()
