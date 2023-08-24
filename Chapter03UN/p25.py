@@ -14,4 +14,4 @@ rwg = nx.read_edgelist('CA-AstroPh.txt', create_using=nx.Graph(), comments='#')
 rwg_nodes = len(rwg.nodes())
 rwg_edges = len(rwg.edges())
 
-rg = nx.gnm_random_graph(rwg_nodes,rwg_edges,seed=10,directed=True)
+rg = nx.gnm_random_graph(rwg_nodes,rwg_edges,seed=10,directed=False)

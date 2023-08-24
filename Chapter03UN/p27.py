@@ -15,7 +15,7 @@ rwg_nodes = len(rwg.nodes())
 rwg_edges = len(rwg.edges())
 d = [rwg.degree(n) for n in nx.nodes(rwg)]
 
-rg = nx.gnm_random_graph(rwg_nodes,rwg_edges,seed=10,directed=True)
+rg = nx.gnm_random_graph(rwg_nodes,rwg_edges,seed=10,directed=False)
 
 cg = nx.configuration_model (d,seed=10)
 
