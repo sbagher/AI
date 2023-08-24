@@ -9,9 +9,8 @@ print('Problem: 26, Chapter: 03, Book: "Practical Social Network Analysis with P
 print('Conﬁguration model random graph: Generate a random instance of this model by using the graph in the dataset\n')
 
 # read the edges from the 'CA-AstroPh.txt' file
-rwg = nx.read_edgelist('CA-AstroPh.txt', create_using=nx.DiGraph(), comments='#')
+rwg = nx.read_edgelist('CA-AstroPh.txt', create_using=nx.Graph(), comments='#')
 
-ind = [rwg.in_degree(n) for n in nx.nodes(rwg)]
-outd = [rwg.out_degree(n) for n in nx.nodes(rwg)]
+d = [rwg.degree(n) for n in nx.nodes(rwg)]
 
-cg = nx.directed_configuration_model (ind,outd,seed=10)
+cg = nx.configuration_model (d,seed=10)
