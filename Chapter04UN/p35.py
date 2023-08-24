@@ -11,7 +11,7 @@ print('Problem: 35, Chapter: 04, Book: "Practical Social Network Analysis with P
 print('Clustering coefﬁcient distributions\n')
 
 # read the edges from the 'CA-AstroPh.txt' file
-rwg = nx.read_edgelist('CA-GrQc.txt', create_using=nx.DiGraph(), comments='#')
+rwg = nx.read_edgelist('CA-GrQc.txt', create_using=nx.Graph(), comments='#')
 
 rwg_nodes = len(rwg.nodes())
 
