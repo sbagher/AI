@@ -17,7 +17,7 @@ rwg = nx.read_edgelist('ca-HepPh.txt', create_using=nx.DiGraph(), comments='#')
 
 plt.rcParams["figure.figsize"] = (10,5)
 def show_dist(g,i,t):
-    dgsq = [g.degree(n) for n in nx.nodes(g)]
+    dgsq = [g.degree(n) for n in list(nx.nodes(g))]
     plt.subplot(1, 1, i)
     plt.hist(dgsq, bins=max(dgsq), color ='red')
     plt.title(f'Degree Distribution Histogram for \n{t}')
