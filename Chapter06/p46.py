@@ -17,10 +17,18 @@ searches that succeeded. Then draw a plot of the average path length as a functi
 of α. Also, plot the search success probability as a function of α.\n')
 
 def h (v,u):
-    t = 511
-    for i in range(1,10,1):
+    t = 1023
+    for i in range(1,11,1):
         t = t<<1
         if (v & t)==(u & t):
-            print (i)
-            break
+            return 
 
+p = np.zeros(11,dtype=np.float32)
+def pc (a):
+    for i in range(1,11,1):
+        p[i] = 2 ** (-a*i)
+
+g = nx.Graph
+def cg():
+    
+    
