@@ -27,7 +27,7 @@ def h (v,u):
 
 def create_graph (a):
     g = nx.DiGraph()
-    p = np.zeros(11, dtype=np.float32)
+    p = np.zeros(11, dtype=np.float64)
     for i in range(1,11,1):
         p[i] = 2 ** (-a*i)
 
@@ -40,6 +40,13 @@ def create_graph (a):
     i = -1
     ps = 0.0
     for n1 in list(nx.nodes(g)):
+        wp = 0
+        for nn in range(0,1000,1):
+            nnn = int(l[nn])
+            wp += p[int(h(n1,nnn))]
+            wpz = (1//wp)*wp
+            ps += (((1-ps)//wp)*wp)
+        print (wpz)
         k = 0
         while k != 5:
             i += 1
@@ -52,7 +59,7 @@ def create_graph (a):
                     if ps >= 1:
                         g.add_edge(n1,n2)
                         k += 1
-                        ps = 0
+                        ps = wpz
     return g
 
 def run_search(a):
@@ -77,8 +84,8 @@ def run_search(a):
             um = -1
             m = 11
             for u in sn:
-                if h(s,u)<m:
-                    m = h(s,u)
+                if h(u,t)<m:
+                    m = h(u,t)
                     um = u
             if um == t:
                 SuccessHopsSum += hops
