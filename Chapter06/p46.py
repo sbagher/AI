@@ -5,6 +5,7 @@
 
 import networkx as nx
 import numpy as np
+import random
 
 print('Problem: 46, Chapter: 06, Book: "Practical Social Network Analysis with Python"\n')
 print('Create random networks for α = 0.1, 0.2, ... , 10. For each of these networks,\n\
@@ -21,15 +22,38 @@ def h (v,u):
     for i in range(1,11,1):
         t = t<<1
         if (v & t)==(u & t):
-            return 
+            return i
 
-p = np.zeros(11,dtype=np.float32)
-def pc (a):
+def create_graph (a):
+    g = nx.DiGraph()
+    p = np.zeros(11, dtype=np.float32)
     for i in range(1,11,1):
         p[i] = 2 ** (-a*i)
 
-g = nx.Graph
-def cg():
-    for i in range(0,999,1):
-        g.add_vertex(i)
-    
+    l = np.arange(1000)
+    for n in range(0,999,1):
+        g.add_node(n)
+
+    np.random.shuffle(l)
+
+    i = -1
+    ps = 0.0
+    for n1 in list(nx.nodes(g)):
+        k = 0
+        while k != 5:
+            i += 1
+            if i == 1000:
+                i = 0
+            n2 = int(l[i])
+            if n1 != n2:
+                if not g.has_edge(n2, n1):
+                    ps += p[int(h(n1,n2))]
+                    if ps >= 1:
+                        g.add_edge(n1,l[i])
+                        k += 1
+                        ps = 0
+    return g
+
+g = create_graph (0.1)
+edges = list(g.edges())
+samples = random.sample(edges, 1000)
