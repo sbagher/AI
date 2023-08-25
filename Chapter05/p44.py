@@ -16,14 +16,20 @@ print('Average friends-of-friends distribution\n')
 # It seems that friendster dataset needs GraphX on Hadoop or Spark. So it can not run on my laptop!
 rwg = nx.read_edgelist('ca-HepPh.txt', create_using=nx.DiGraph(), comments='#')
 rwg.remove_edges_from(nx.selfloop_edges(rwg))
+rwg = nx.Graph(rwg)
 
-plt.rcParams["figure.figsize"] = (10,5)
-def show_dist(g,i,t):
-    fof1,fof2 = {}, {}
+plt.rcParams["figure.figsize"] = (14,8)
+def show_dist(g,t):
+    dgsq = [g.degree(n) for n in nx.nodes(g)]
+    dgsq = max(dgsq)
+    fofs1 = np.zeros(dgsq+1,dtype=np.int32)
+    fofs2 = np.zeros(dgsq+1,dtype=np.int32)
+    fofn = np.zeros(dgsq+1,dtype=np.int32)
 
     for n1 in g.nodes:
         nbs1 = set(g.neighbors(n1))
-        nbs1.remove(n1)
+        if n1 in nbs1:
+            nbs1.remove(n1)
         nbs3 = set()
         out = 0
         for n2 in nbs1:
@@ -31,41 +37,35 @@ def show_dist(g,i,t):
             nbs2.remove(n1)
             out += len(nbs2)
             nbs3 |= nbs2
+        d=g.degree(n1)
+        fofs1[d] += len(nbs3)
+        fofs2[d] += out
+        fofn[d] += 1
 
-        fof1[n1] = len(nbs3)
-        fof2[n1] = out
-
-    dgc = dict(nx.core_number(g))
-    dgc = set(dgc.values())
-    dgc = sorted(dgc)
-    rwg_nodes = len(g.nodes())
-    l=np.zeros(rwg_nodes+1,dtype=np.int32)
-
-    ax1, ax2, ax3, ax4 = [], [], [], []
-    for j in dgc:
-        gt = nx.k_core(g, k=j)
-        ll=len(gt.nodes())
-        if ll!=0:
-            l[ll] += 1
-            ax1.append(j)
-            ax2.append(ll)
+    ax1, ax2, ax3, ax4, ax5 = [], [], [], [], []
+    for d in range(1,dgsq+1,1):
+        if fofn[d]!=0:
+            ax1.append(d)
+            ax2.append(fofn[d])
+            ax3.append(fofs1[d]/fofn[d])
+            ax4.append(fofs2[d]/fofn[d])
+            ax5.append(d*d)
 
     plt.subplot(1, 2, 1)
     plt.plot(ax1, ax2, color ='green', linewidth=1)
-    plt.title(f'K-Core Node Size for \n{t}')
-    plt.xlabel('K in K-Core')
-    plt.ylabel('Number of Nodes in K-Core')
-
-    for j in range (rwg_nodes,0,-1):
-        if l[j] != 0:
-            ax3.append(j)
-            ax4.append(l[j])
+    plt.title(f'Number of friends-of-friends (NFoF) \n{t}')
+    plt.xlabel('Degree')
+    plt.ylabel('NFoF')
 
     plt.subplot(1, 2, 2)
-    plt.plot(ax3, ax4, color ='red', linewidth=1)
-    plt.title(f'K-Core Node Size Distribution Histogram for \n{t}')
-    plt.xlabel('Number of Nodes in K-Core')
-    plt.ylabel('Frequency')
+    plt.plot(ax1, ax3, label = "Unique FoFs")
+    plt.plot(ax1, ax4, label = "Non-Unique FoFs")
+    #plt.plot(ax1, ax5, color ='blue', linewidth=1, label = "K2")
+    plt.title(f'Average Friends-of-Friends (AFoF)\nDistribution Histogram for\n{t}')
+    plt.xlabel('Degree (K)')
+    plt.ylabel('AFoF')
+    plt.legend()
 
-show_dist(rwg,1,"(High Energy Physics - Phenomenology)\ncollaboration network dataset")
+
+show_dist(rwg,"(High Energy Physics - Phenomenology)\ncollaboration network dataset")
 plt.show()
