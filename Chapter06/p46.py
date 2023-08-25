@@ -92,21 +92,28 @@ def run_search(a):
     return SuccessHopsSum, SuccessHopsNum
 
 ax1, ax2, ax3 = [], [], []
-for a in np.arange (0.1, 10, 0.1):
+for aa in np.arange (0.1, 2.1, 0.1):
+    a = round(aa,1)
+    print (a)
     s, n = run_search(a)
     ax1.append(a)
-    ax2.append(s/n)
-    ax3.append(n/1000)
+    if n==0:
+        ax2.append(0.0)
+        ax3.append(0.0)
+    else:
+        ax2.append(s/n)
+        ax3.append(n/1000)
 
 plt.rcParams["figure.figsize"] = (14,8)
 plt.subplot(1, 2, 1)
 plt.plot(ax1, ax2, color ='green', linewidth=1)
-plt.title(f'Average Path Length Histogram for\n{t}')
+plt.title(f'Average Path Length Histogram')
 plt.xlabel('α')
 plt.ylabel('Average Path Length')
 
 plt.subplot(1, 2, 2)
 plt.plot(ax1, ax3, color ='blue', linewidth=1)
-plt.title(f'Average Path Length Histogram for\n{t}')
+plt.title(f'Average Path Length Histogram')
 plt.xlabel('α')
 plt.ylabel('search success probability')
+plt.show()
