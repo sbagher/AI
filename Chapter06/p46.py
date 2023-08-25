@@ -4,6 +4,7 @@
 # Assignment: Problem: 46, Chapter: 06, Book: "Practical Social Network Analysis with Python"
 
 import networkx as nx
+import matplotlib.pyplot as plt
 import numpy as np
 import random
 
@@ -54,6 +55,58 @@ def create_graph (a):
                         ps = 0
     return g
 
-g = create_graph (0.1)
-edges = list(g.edges())
-samples = random.sample(edges, 1000)
+def run_search(a):
+    g = create_graph (a)
+    nodes = list(g.nodes)
+    node_pairs = []
+    i = 0
+    while i!= 1000:
+        u, v = random.sample(nodes, 2)
+        t = (u, v)
+        if not (v == u or t in node_pairs):
+            node_pairs.append(t)
+            i += 1
+
+    SuccessHopsSum = 0
+    SuccessHopsNum = 0
+    for s, t in node_pairs:
+        hops = 0
+        while True:
+            hops += 1
+            sn = set(g.neighbors(s))
+            um = -1
+            m = 11
+            for u in sn:
+                if h(s,u)<m:
+                    m = h(s,u)
+                    um = u
+            if um == t:
+                SuccessHopsSum += hops
+                SuccessHopsNum += 1
+                break
+            else:
+                if h(s, t) > h(um, t):
+                    s = um
+                else:
+                    break
+    return SuccessHopsSum, SuccessHopsNum
+
+ax1, ax2, ax3 = [], [], []
+for a in np.arange (0.1, 10, 0.1):
+    s, n = run_search(a)
+    ax1.append(a)
+    ax2.append(s/n)
+    ax3.append(n/1000)
+
+plt.rcParams["figure.figsize"] = (14,8)
+plt.subplot(1, 2, 1)
+plt.plot(ax1, ax2, color ='green', linewidth=1)
+plt.title(f'Average Path Length Histogram for\n{t}')
+plt.xlabel('α')
+plt.ylabel('Average Path Length')
+
+plt.subplot(1, 2, 2)
+plt.plot(ax1, ax3, color ='blue', linewidth=1)
+plt.title(f'Average Path Length Histogram for\n{t}')
+plt.xlabel('α')
+plt.ylabel('search success probability')
