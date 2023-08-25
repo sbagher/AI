@@ -92,7 +92,7 @@ def run_search(a):
     return SuccessHopsSum, SuccessHopsNum
 
 ax1, ax2, ax3 = [], [], []
-for aa in np.arange (0.1, 2.1, 0.1):
+for aa in np.arange (0.1, 10.1, 0.1):
     a = round(aa,1)
     print (a)
     s, n = run_search(a)
