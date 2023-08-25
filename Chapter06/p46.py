@@ -16,3 +16,11 @@ For each α, pick 1000 pairs of nodes and compute the average path length for th
 searches that succeeded. Then draw a plot of the average path length as a function\n\
 of α. Also, plot the search success probability as a function of α.\n')
 
+def h (v,u):
+    t = 511
+    for i in range(1,10,1):
+        t = t<<1
+        if (v & t)==(u & t):
+            print (i)
+            break
+
