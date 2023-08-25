@@ -31,7 +31,7 @@ def create_graph (a):
         p[i] = 2 ** (-a*i)
 
     l = np.arange(1000)
-    for n in range(0,999,1):
+    for n in range(0,1000,1):
         g.add_node(n)
 
     np.random.shuffle(l)
@@ -46,10 +46,10 @@ def create_graph (a):
                 i = 0
             n2 = int(l[i])
             if n1 != n2:
-                if not g.has_edge(n2, n1):
+                if not (g.has_edge(n1, n2) or g.has_edge(n2, n1)):
                     ps += p[int(h(n1,n2))]
                     if ps >= 1:
-                        g.add_edge(n1,l[i])
+                        g.add_edge(n1,n2)
                         k += 1
                         ps = 0
     return g
