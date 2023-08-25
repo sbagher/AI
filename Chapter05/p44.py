@@ -7,7 +7,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
 
-print('Problem: 43, Chapter: 05, Book: "Practical Social Network Analysis with Python"\n')
+print('Problem: 44, Chapter: 05, Book: "Practical Social Network Analysis with Python"\n')
 print('Average friends-of-friends distribution\n')
 
 # Read the edges from the 'ca-HepPh.txt' instead of 'com-friendster.ungraph.txt' file,
