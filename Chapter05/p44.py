@@ -20,13 +20,13 @@ rwg = nx.Graph(rwg)
 
 plt.rcParams["figure.figsize"] = (14,8)
 def show_dist(g,t):
-    dgsq = [g.degree(n) for n in nx.nodes(g)]
+    dgsq = [g.degree(n) for n in list(nx.nodes(g))]
     dgsq = max(dgsq)
     fofs1 = np.zeros(dgsq+1,dtype=np.int32)
     fofs2 = np.zeros(dgsq+1,dtype=np.int32)
     fofn = np.zeros(dgsq+1,dtype=np.int32)
 
-    for n1 in g.nodes():
+    for n1 in list(g.nodes()):
         nbs1 = set(g.neighbors(n1))
         if n1 in nbs1:
             nbs1.remove(n1)
