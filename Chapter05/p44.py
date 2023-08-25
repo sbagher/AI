@@ -26,7 +26,7 @@ def show_dist(g,t):
     fofs2 = np.zeros(dgsq+1,dtype=np.int32)
     fofn = np.zeros(dgsq+1,dtype=np.int32)
 
-    for n1 in g.nodes:
+    for n1 in g.nodes():
         nbs1 = set(g.neighbors(n1))
         if n1 in nbs1:
             nbs1.remove(n1)
@@ -53,9 +53,9 @@ def show_dist(g,t):
 
     plt.subplot(1, 2, 1)
     plt.plot(ax1, ax2, color ='green', linewidth=1)
-    plt.title(f'Number of friends-of-friends (NFoF) \n{t}')
+    plt.title(f'Degree Distribution Histogram for\n{t}')
     plt.xlabel('Degree')
-    plt.ylabel('NFoF')
+    plt.ylabel('Number of Nodes')
 
     plt.subplot(1, 2, 2)
     plt.plot(ax1, ax3, label = "Unique FoFs")
