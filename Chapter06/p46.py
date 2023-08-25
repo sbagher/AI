@@ -30,5 +30,6 @@ def pc (a):
 
 g = nx.Graph
 def cg():
-    
+    for i in range(0,999,1):
+        g.add_vertex(i)
     
