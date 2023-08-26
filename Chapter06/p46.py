@@ -64,17 +64,8 @@ def create_graph (a):
                         ps = wpz_n1
     return g
 
-def run_search(a):
+def run_search(a, node_pairs):
     g = create_graph (a)
-    nodes = list(range(0,1000,1))
-    node_pairs = []
-    i = 0
-    while i!= 1000:
-        u, v = random.sample(nodes, 2)
-        t = (u, v)
-        if not (v == u or t in node_pairs):
-            node_pairs.append(t)
-            i += 1
 
     SuccessHopsSum = 0
     SuccessHopsNum = 0
@@ -100,11 +91,21 @@ def run_search(a):
                     break
     return SuccessHopsSum, SuccessHopsNum
 
+nodes = list(range(0,1000,1))
+node_pairs = []
+i = 0
+while i!= 1000:
+    u, v = random.sample(nodes, 2)
+    t = (u, v)
+    if not (v == u or t in node_pairs):
+        node_pairs.append(t)
+        i += 1
+
 ax1, ax2, ax3 = [], [], []
 for aa in np.arange (0.1, 3.1, 0.1):
     a = round(aa,1)
     print (a)
-    s, n = run_search(a)
+    s, n = run_search(a, node_pairs)
     ax1.append(a)
     if n==0:
         ax2.append(0.0)
