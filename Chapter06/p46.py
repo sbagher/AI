@@ -33,47 +33,40 @@ def create_graph (a):
     for i in range(1,11,1):
         p[i] = 2 ** (-a*i)
 
-#    l = list(range(0,1000,1))
     for n in range(0,1000,1):
         g.add_node(n)
 
-#    np.random.shuffle(l)
-    wpz = np.range(0,1000,1))
+    wpz = np.zeros(1000, dtype=np.float64)
     for n1 in range(0,1000,1):
+        wp = 0
         for n2 in range(0,1000,1):
-#            wp += p[h(n1,l[n2])]
             wp += p[h(n1,n2)]
-        wpz = (1//wp)*wp
-        ps += (((1-ps)//wp)*wp)
+        wpz[n1] = (1//wp)*wp
 
     i = -1
     ps = 0.0
-    for n1 in list(nx.nodes(g)):
-        wp = 0
-        for nn in range(0,1000,1):
-            nnn = int(l[nn])
-            wp += p[int(h(n1,nnn))]
-            wpz = (1//wp)*wp
-            ps += (((1-ps)//wp)*wp)
-        print (wpz)
+    for n1 in range(0,1000,1):
+        wpz_n1 = wpz[n1]
+        if wpz_n1 != 0:
+            ps += (((1-ps)//wpz_n1)*wpz_n1)
         k = 0
         while k != 5:
             i += 1
             if i == 1000:
                 i = 0
-            n2 = int(l[i])
+            n2 = i
             if n1 != n2:
                 if not (g.has_edge(n1, n2) or g.has_edge(n2, n1)):
-                    ps += p[int(h(n1,n2))]
+                    ps += p[h(n1,n2)]
                     if ps >= 1:
                         g.add_edge(n1,n2)
                         k += 1
-                        ps = wpz
+                        ps = wpz_n1
     return g
 
 def run_search(a):
     g = create_graph (a)
-    nodes = list(g.nodes)
+    nodes = list(range(0,1000,1))
     node_pairs = []
     i = 0
     while i!= 1000:
@@ -93,7 +86,7 @@ def run_search(a):
             um = -1
             m = 11
             for u in sn:
-                if h(u,t)<m:
+                if h(u,t) < m:
                     m = h(u,t)
                     um = u
             if um == t:
@@ -108,7 +101,7 @@ def run_search(a):
     return SuccessHopsSum, SuccessHopsNum
 
 ax1, ax2, ax3 = [], [], []
-for aa in np.arange (2.1, 10.1, 0.1):
+for aa in np.arange (0.1, 3.1, 0.1):
     a = round(aa,1)
     print (a)
     s, n = run_search(a)
@@ -129,7 +122,7 @@ plt.ylabel('Average Path Length')
 
 plt.subplot(1, 2, 2)
 plt.plot(ax1, ax3, color ='blue', linewidth=1)
-plt.title(f'Average Path Length Histogram')
+plt.title(f'Search Success Probability Histogram')
 plt.xlabel('α')
 plt.ylabel('search success probability')
 plt.show()
