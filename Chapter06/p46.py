@@ -19,6 +19,8 @@ searches that succeeded. Then draw a plot of the average path length as a functi
 of α. Also, plot the search success probability as a function of α.\n')
 
 def h (v,u):
+    if u == v:
+        return 0
     t = 1023
     for i in range(1,11,1):
         t = t<<1
@@ -31,11 +33,18 @@ def create_graph (a):
     for i in range(1,11,1):
         p[i] = 2 ** (-a*i)
 
-    l = np.arange(1000)
+#    l = list(range(0,1000,1))
     for n in range(0,1000,1):
         g.add_node(n)
 
-    np.random.shuffle(l)
+#    np.random.shuffle(l)
+    wpz = np.range(0,1000,1))
+    for n1 in range(0,1000,1):
+        for n2 in range(0,1000,1):
+#            wp += p[h(n1,l[n2])]
+            wp += p[h(n1,n2)]
+        wpz = (1//wp)*wp
+        ps += (((1-ps)//wp)*wp)
 
     i = -1
     ps = 0.0
