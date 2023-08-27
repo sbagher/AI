@@ -7,6 +7,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
 import random
+import time
 
 print('Problem: 46, Chapter: 06, Book: "Practical Social Network Analysis with Python"\n')
 print('Create random networks for α = 0.1, 0.2, ... , 10. For each of these networks,\n\
@@ -102,10 +103,12 @@ while i!= 1000:
         i += 1
 
 ax1, ax2, ax3 = [], [], []
-for aa in np.arange (0.1, 3.1, 0.1):
+for aa in np.arange (0.1, 10.1, 0.1):
     a = round(aa,1)
-    print (a)
+    start = time.time()
     s, n = run_search(a, node_pairs)
+    end = time.time()
+    print(a, end - start)    
     ax1.append(a)
     if n==0:
         ax2.append(0.0)
