@@ -31,63 +31,129 @@ def h (v,u):
 def create_graph (a):
     g = nx.DiGraph()
 
-    s = 0
+    sp = 0.0
     p = np.zeros(11, dtype=np.float64)
     for i in range(1,11,1):
         p[i] = 2 ** (-a*i)
-        s += p[i]
+        sp += p[i]
 
-    f = 5000/s
-    s = 0
+    b = 0
+    sc = 0
     c = np.zeros(11, dtype=np.int16)
-    for i in range(1,10,1):
-        c[i] = round(p[i] * f, 0)
-        s = s+1
-    c[10] = 5000 - s
-    
+    while abs(5000-sc)>5:
+        sc = 0
+        f = (5000+b)/sp
+        for i in range(1,11,1):
+            c[i] = round(p[i] * f, 0)
+            sc += int(c[i])
+        b = 5000-sc
+
+    for i in range(1,11,1):
+        if sc < 5000:
+            c[i] += 1
+            sc += 1
+        if sc > 5000:
+            c[i] -= 1
+            sc -= 1
+        if sc == 5000:
+            break
+
     nodes = list(range(0,1024,1))
     while len (nodes) != 1000:
         node = random.randint(0,1024)
-        nodes.remove(node)
+        if node in nodes:
+            nodes.remove(node)
 
     for node in nodes:
         g.add_node(node)
 
-    shape = (1000,11)
+    shape = (1024,11)
     exist = np.zeros(shape, dtype=np.int16)
     for n1 in nodes:
         for n2 in nodes:
             exist [n1][h(n1,n2)] += 1
 
-    shape = (1000,11)
-    choosed = np.zeros(shape, dtype=np.int8)
+    shape = (1024,12)
+    choosed = np.zeros(shape, dtype=np.int16)
     for l in range(1,11,1):
         rl = []
         for n1 in nodes:
             ex = exist[n1][l]
-            ch = choosed[n1][l]
+            ch = choosed[n1][11]
             while ex > 0 and ch < 5:
                 ex -= 1
                 ch += 1
                 rl.append(n1)
         random.shuffle(rl)
-        cl = random.sample(nodes, c[l])
+
+        lrl = len(rl)
+        if lrl < c[l]:
+            c[l] = lrl
+            sp = 0.0
+            for i in range(l+1,11,1):
+                sp += p[i]
+            sc = 0
+            for i in range(1,l+1,1):
+                sc += c[i]
+            nn = 5000 - sc
+            b = 0
+            sc = 0
+            while abs(nn-sc)>5:
+                sc = 0
+                f = (nn+b)/sp
+                for i in range(l+1,11,1):
+                    c[i] = round(p[i] * f, 0)
+                    sc += int(c[i])
+                b = nn-sc
+
+            for i in range(l+1,11,1):
+                if sc < nn:
+                    c[i] += 1
+                    sc += 1
+                if sc > nn:
+                    c[i] -= 1
+                    sc -= 1
+                if sc == nn:
+                    break
+            
+        cl = random.sample(rl, c[l])
         for n1 in cl:
             choosed[n1][l] += 1
+            exist[n1][l] -= 1
+            choosed[n1][11] += 1
 
     for n1 in nodes:
-        rl = set(choosed[n1])
-        for l in range(1,11,1):
-            ch = choosed[n1][l]
-            while ch > 0:
-                rl[l] = ch
+        r = np.empty(11, dtype=object)
+        rl = []
+        for l in range(0,11,1):
+            r[l] = []
+            ch = int(choosed[n1][l])
+            while ch != 0:
+                rl.append(l)
                 ch -= 1
+        for n2 in nodes:
+            r[int(h(n1,n2))].append(n2)
+        for l in rl:
+            n2 = random.sample(r[l], 1)
+            g.add_edge(n1,n2[0])
+            r[l].remove(n2[0])
 
     return g
 
-def run_search(a, node_pairs):
-    g = create_graph (a)
+def create_node_pairs(g):
+    nodes = list(g.nodes())
+    node_pairs = []
+    i = 0
+    while i!= 1000:
+        u, v = random.sample(nodes, 2)
+        t = (u, v)
+        if not (v == u or t in node_pairs):
+            node_pairs.append(t)
+            i += 1
 
+    return node_pairs
+
+def run_search(g, node_pairs):
     SuccessHopsSum = 0
     SuccessHopsNum = 0
     for s, t in node_pairs:
@@ -112,21 +178,16 @@ def run_search(a, node_pairs):
                     break
     return SuccessHopsSum, SuccessHopsNum
 
-nodes = list(range(0,1000,1))
-node_pairs = []
-i = 0
-while i!= 1000:
-    u, v = random.sample(nodes, 2)
-    t = (u, v)
-    if not (v == u or t in node_pairs):
-        node_pairs.append(t)
-        i += 1
-
 ax1, ax2, ax3 = [], [], []
 for aa in np.arange (0.1, 10.1, 0.1):
     a = round(aa,1)
     start = time.time()
-    s, n = run_search(a, node_pairs)
+    g = create_graph (a)
+    for n in g.nodes():
+        if g.out_degree(n)!=5:
+            print ("Jing",g.out_degree(n))
+    node_pairs = create_node_pairs(g)
+    s, n = run_search(g, node_pairs)
     end = time.time()
     print(a, end - start)    
     ax1.append(a)
