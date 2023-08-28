@@ -30,59 +30,75 @@ def h (v,u):
 
 def create_graph (a):
     g = nx.DiGraph()
-
-    s = 0
     p = np.zeros(11, dtype=np.float64)
+    pt = np.zeros(11, dtype=np.float64)
     for i in range(1,11,1):
         p[i] = 2 ** (-a*i)
-        s += p[i]
 
-    f = 5000/s
-    s = 0
-    c = np.zeros(11, dtype=np.int16)
-    for i in range(1,10,1):
-        c[i] = round(p[i] * f, 0)
-        s = s+1
-    c[10] = 5000 - s
-    
-    nodes = list(range(0,1024,1))
-    while len (nodes) != 1000:
-        node = random.randint(0,1024)
-        nodes.remove(node)
+    for n in range(0,1000,1):
+        g.add_node(n)
 
-    for node in nodes:
-        g.add_node(node)
+    shape = (1000,11,11)
+    hl = np.zeros(shape, dtype=np.int16)
+    shape = (1000,1)
+    for n1 in range(0,1000,1):
+        for i in range(0,10,1):
+            for n2 in range(i*100,(i+1)*100,1):
+                hl[n1][i][h(n1,n2)] += 1
 
-    shape = (1000,11)
-    exist = np.zeros(shape, dtype=np.int16)
-    for n1 in nodes:
-        for n2 in nodes:
-            exist [n1][h(n1,n2)] += 1
+        for l in range(0,11,1):
+            hls = 0
+            for i in range(0,10,1):
+                hls += hl[n1][i][l]
+            hl[n1][10][l] = hls
 
-    shape = (1000,11)
-    choosed = np.zeros(shape, dtype=np.int8)
-    for l in range(1,11,1):
-        rl = []
-        for n1 in nodes:
-            ex = exist[n1][l]
-            ch = choosed[n1][l]
-            while ex > 0 and ch < 5:
-                ex -= 1
-                ch += 1
-                rl.append(n1)
-        random.shuffle(rl)
-        cl = random.sample(nodes, c[l])
-        for n1 in cl:
-            choosed[n1][l] += 1
+    n2 = -1
+    ps = 0.0
+    for n1 in range(0,1000,1):
+        k = 0
+        hlt = np.copy(hl[n1][10])
+        wp = 0.0
+        for l in range (1,11,1):
+            wp += hlt[l]*p[l]
+        if wp < 1:
+            f = 1 / wp
+            for i in range(1,11,1):
+                pt[i] = p[i] * f
+        else:
+            for i in range(1,11,1):
+                pt[i] = p[i]
 
-    for n1 in nodes:
-        rl = set(choosed[n1])
-        for l in range(1,11,1):
-            ch = choosed[n1][l]
-            while ch > 0:
-                rl[l] = ch
-                ch -= 1
-
+        while k != 5:
+            n2 += 1
+            if n2 == 1000:
+                n2 = 0
+            
+            while n2 % 100 == 0:
+                j = n2 // 100
+                t = np.copy(hl[n1][j])
+                s1 = 0.0
+                for i in range(1,11,1):
+                    s1 += pt[i] * t[i]
+                if (ps+s1)<1:
+                    ps += s1
+                    n2 = (n2+100) % 1000
+                else:
+                    break
+            if n1 != n2:
+                if not g.has_edge(n1, n2):
+                    ps += pt[h(n1,n2)]
+                    if ps >= 1:
+                        g.add_edge(n1,n2)
+                        k += 1
+                        hlt[h(n1,n2)] -= 1
+                        wp -= pt[h(n1,n2)]
+                        if wp < 1:
+                            f = 1 / wp
+                            wpn = 0.0
+                            for i in range(1,11,1):
+                                pt[i] = p[i] * f
+                                wpn += hlt[i]*p[i]
+                        ps = 0
     return g
 
 def run_search(a, node_pairs):
@@ -123,7 +139,7 @@ while i!= 1000:
         i += 1
 
 ax1, ax2, ax3 = [], [], []
-for aa in np.arange (0.1, 10.1, 0.1):
+for aa in np.arange (1.7, 2.1, 0.1):
     a = round(aa,1)
     start = time.time()
     s, n = run_search(a, node_pairs)

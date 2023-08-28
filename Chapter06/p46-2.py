@@ -44,11 +44,8 @@ def create_graph (a):
     hs = np.empty(shape, dtype=np.float64)
     for n1 in range(0,1000,1):
         wp = 0
-        for i in range(0,10,1):
-            for n2 in range(i*100,(i+1)*100,1):
-                cc = ha[n1][n2] = p[h(n1,n2)]
-                wp += cc
-            hs[n1][i] = wp
+        for n2 in range(0,1000,1):
+            wp += p[h(n1,n2)]
         wpz[n1] = wp
 
     m = max (wpz)
@@ -56,6 +53,14 @@ def create_graph (a):
         f = 1 / m
         for i in range(1,11,1):
             p[i] *= f
+
+    for n1 in range(0,1000,1):
+        for i in range(0,10,1):
+            wp = 0
+            for n2 in range(i*100,(i+1)*100,1):
+                cc = ha[n1][n2] = p[h(n1,n2)]
+                wp += cc
+            hs[n1][i] = wp
 
     n2 = -1
     ps = 0.0

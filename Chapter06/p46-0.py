@@ -30,59 +30,39 @@ def h (v,u):
 
 def create_graph (a):
     g = nx.DiGraph()
-
-    s = 0
     p = np.zeros(11, dtype=np.float64)
     for i in range(1,11,1):
         p[i] = 2 ** (-a*i)
-        s += p[i]
 
-    f = 5000/s
-    s = 0
-    c = np.zeros(11, dtype=np.int16)
-    for i in range(1,10,1):
-        c[i] = round(p[i] * f, 0)
-        s = s+1
-    c[10] = 5000 - s
-    
-    nodes = list(range(0,1024,1))
-    while len (nodes) != 1000:
-        node = random.randint(0,1024)
-        nodes.remove(node)
+    for n in range(0,1000,1):
+        g.add_node(n)
 
-    for node in nodes:
-        g.add_node(node)
+    wpz = np.zeros(1000, dtype=np.float64)
+    for n1 in range(0,1000,1):
+        wp = 0
+        for n2 in range(0,1000,1):
+            wp += p[h(n1,n2)]
+        wpz[n1] = (1//wp)*wp
 
-    shape = (1000,11)
-    exist = np.zeros(shape, dtype=np.int16)
-    for n1 in nodes:
-        for n2 in nodes:
-            exist [n1][h(n1,n2)] += 1
-
-    shape = (1000,11)
-    choosed = np.zeros(shape, dtype=np.int8)
-    for l in range(1,11,1):
-        rl = []
-        for n1 in nodes:
-            ex = exist[n1][l]
-            ch = choosed[n1][l]
-            while ex > 0 and ch < 5:
-                ex -= 1
-                ch += 1
-                rl.append(n1)
-        random.shuffle(rl)
-        cl = random.sample(nodes, c[l])
-        for n1 in cl:
-            choosed[n1][l] += 1
-
-    for n1 in nodes:
-        rl = set(choosed[n1])
-        for l in range(1,11,1):
-            ch = choosed[n1][l]
-            while ch > 0:
-                rl[l] = ch
-                ch -= 1
-
+    i = -1
+    ps = 0.0
+    for n1 in range(0,1000,1):
+        wpz_n1 = wpz[n1]
+        if wpz_n1 != 0:
+            ps += (((1-ps)//wpz_n1)*wpz_n1)
+        k = 0
+        while k != 5:
+            i += 1
+            if i == 1000:
+                i = 0
+            n2 = i
+            if n1 != n2:
+                if not (g.has_edge(n1, n2) or g.has_edge(n2, n1)):
+                    ps += p[h(n1,n2)]
+                    if ps >= 1:
+                        g.add_edge(n1,n2)
+                        k += 1
+                        ps = wpz_n1
     return g
 
 def run_search(a, node_pairs):
