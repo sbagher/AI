@@ -155,7 +155,7 @@ def create_node_pairs(g):
 
 def run_search(g, node_pairs):
     SuccessHopsSum = 0
-    SuccessHopsNum = 0
+    SuccessSum = 0
     for s, t in node_pairs:
         hops = 0
         while True:
@@ -169,14 +169,14 @@ def run_search(g, node_pairs):
                     um = u
             if um == t:
                 SuccessHopsSum += hops
-                SuccessHopsNum += 1
+                SuccessSum += 1
                 break
             else:
                 if h(s, t) > h(um, t):
                     s = um
                 else:
                     break
-    return SuccessHopsSum, SuccessHopsNum
+    return SuccessHopsSum, SuccessSum
 
 ax1, ax2, ax3 = [], [], []
 for aa in np.arange (0.1, 10.1, 0.1):
