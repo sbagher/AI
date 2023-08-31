@@ -124,72 +124,20 @@ def create_graph (a):
             level_capacity = np.zeros(11, dtype=np.int16)
             while abs(max_edges-sum_of_egdes) > 5:
                 sum_of_egdes = 0
-                for l in range(1,11,1):
-                    level_capacity[l] = round(p[l] * (max_edges+b) / sum_of_probabilities * nodes_in_level[l], 0)
-                    sum_of_egdes += int(level_capacity[l])
+                for lt in ordered_levels[l+1:11]:
+                    level_capacity[lt] = round(p[lt] * (max_edges+b) / sum_of_probabilities * nodes_in_level[lt], 0)
+                    sum_of_egdes += int(level_capacity[lt])
                 b = max_edges-sum_of_egdes
 
-            for l in ordered_levels[:11]:
+            for lt in ordered_levels[l+1:11]:
                 if sum_of_egdes < 5000:
-                    level_capacity[l] += 1
+                    level_capacity[lt] += 1
                     sum_of_egdes += 1
-                if sum_of_egdes > 5000 and level_capacity[l] != 0:
-                    level_capacity[l] -= 1
+                if sum_of_egdes > 5000 and level_capacity[lt] != 0:
+                    level_capacity[lt] -= 1
                     sum_of_egdes -= 1
                 if sum_of_egdes == 5000:
                     break
-
-
-
-
-
-        lrl = len(out_permitted_nodes)
-        if lrl < c[l]:
-            c[l] = lrl
-            sc = 0
-            for i in range(1,l+1,1):
-                sc += c[i]
-            nn = 5000 - sc
-            b = 0
-            sc = 0
-            while abs(nn-sc)>5:
-                sc = 0
-                for lt in range(l+1,11,1):
-                    c[lt] = round(p[lt] * (nn+b) / sp * nodes_in_level[lt], 0)
-                    sc += int(c[lt])
-                b = nn-sc
-
-            for lt in range(10,l+1,-1):
-                if sc < nn:
-                    c[lt] += 1
-                    sc += 1
-                if sc > nn and c[lt] != 0:
-                    c[lt] -= 1
-                    sc -= 1
-                if sc == nn:
-                    break
-            
-        cl = random.sample(rl, c[l])
-        for n1 in cl:
-            out_nodes[n1][l] += 1
-            out_cap[n1][l] -= 1
-            out_nodes[n1][11] += 1
-
-    for n1 in nodes:
-        r = np.empty(11, dtype=object)
-        rl = []
-        for l in range(0,11,1):
-            r[l] = []
-            outn = int(out_nodes[n1][l])
-            while outn != 0:
-                rl.append(l)
-                outn -= 1
-        for n2 in nodes:
-            r[int(h(n1,n2))].append(n2)
-        for l in rl:
-            n2 = random.sample(r[l], 1)
-            g.add_edge(n1,n2[0])
-            r[l].remove(n2[0])
 
     return g
 
