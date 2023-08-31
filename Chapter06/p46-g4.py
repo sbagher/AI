@@ -108,6 +108,7 @@ def create_graph (a):
         while level_capacity[l] != 0 and out_permitted_nodes:
             n1 = out_permitted_nodes.pop()
             related_as_in_nodes = related_nodes_in_level[l][n1][:last_item[l][n1]]
+            sel = 0
             for n2 in related_as_in_nodes:
                 if (not g.has_edge(n1, n2)) and in_capacity_used[n2] < 5:
                     g.add_edge(n1,n2)
@@ -115,10 +116,35 @@ def create_graph (a):
                     in_capacity_used[n2] += 1
                     out_capacity_used[n1] += 1
                     created_edges += 1
+                    sel = 1
                     break
+            if sel == 0:
+                nodes_with_in_capacity = set()
+                for n2 in nodes:
+                    if in_capacity_used[n2] != 5:
+                        nodes_with_in_capacity |= {n2}
+                for in2 in related_as_in_nodes:
+                    n2 = int(in2)
+                    n2_predecessors = list(g.predecessors(n2))
+                    for n3 in n2_predecessors:
+                        for n4 in nodes_with_in_capacity:
+                            if h(n3, n4) == h(n1, n2):
+                                g.remove_edge (n3, n2)
+                                g.add_edge(n3,n4)
+                                g.add_edge(n1,n2)
+                                level_capacity[l] -= 1
+                                in_capacity_used[n4] += 1
+                                out_capacity_used[n1] += 1
+                                created_edges += 1
+                                sel = 1
+                                break
+                        if sel == 1:
+                            break
+                    if sel == 1:
+                        break
 
         if level_capacity[l] != 0:
-            if l != 10:
+            if l != reverse_ordered_levels[10]:
                 sum_of_probabilities = 0
                 for lt in reverse_ordered_levels[l:10]:
                     sum_of_probabilities += p[lt]
@@ -190,8 +216,12 @@ for aa in np.arange (0.1, 10.1, 0.1):
     start = time.time()
     g = create_graph (a)
     for n in g.nodes():
+        if g.in_degree(n)!=5 and g.out_degree(n)!=5:
+            print ("Node:", n,"out_degree:",g.out_degree(n), "in_degree:",g.in_degree(n))
         if g.out_degree(n)!=5:
-            print ("Jing",g.out_degree(n))
+            print ("Node:", n,"out_degree:",g.out_degree(n))
+        if g.in_degree(n)!=5:
+            print ("Node:", n,"in_degree:",g.in_degree(n))
     node_pairs = create_node_pairs(g)
     s, n = run_search(g, node_pairs)
     end = time.time()
