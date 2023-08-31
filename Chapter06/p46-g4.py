@@ -35,7 +35,8 @@ def create_graph (a):
     for l in range(1,11,1):
         p[l] = 2 ** (-a*l)
 
-    ordered_levels = np.flip(np.argsort(p))
+    ordered_levels = np.argsort(p)
+    reverse_ordered_levels = np.flip(ordered_levels)
 
     nodes = list(range(0,1024,1))
     while len (nodes) != 1000:
@@ -61,7 +62,7 @@ def create_graph (a):
 
     sum_of_probabilities = 0
     for l in range(1,11,1):
-        sum_of_probabilities += p[l] * nodes_in_level[l]
+        sum_of_probabilities += p[l]
 
     b = 0
     sum_of_egdes = 0
@@ -70,11 +71,11 @@ def create_graph (a):
     while abs(max_edges-sum_of_egdes) > 5:
         sum_of_egdes = 0
         for l in range(1,11,1):
-            level_capacity[l] = round(p[l] * (max_edges+b) / sum_of_probabilities * nodes_in_level[l], 0)
+            level_capacity[l] = round(p[l] * (max_edges+b) / sum_of_probabilities, 0)
             sum_of_egdes += int(level_capacity[l])
         b = max_edges-sum_of_egdes
 
-    for l in ordered_levels[:11]:
+    for l in ordered_levels[1:]:
         if sum_of_egdes < 5000:
             level_capacity[l] += 1
             sum_of_egdes += 1
@@ -85,9 +86,9 @@ def create_graph (a):
             break
 
     in_capacity_used = np.zeros(1024, dtype=np.int8)
-    out_capacity_used = np.zeros(1024, dtype=np.int16)
+    out_capacity_used = np.zeros(1024, dtype=np.int8)
     created_edges = 0
-    for l in ordered_levels[:1]:
+    for l in reverse_ordered_levels[:11]:
         out_permitted_nodes = []
         for n1 in nodes:
             related_as_in_nodes = related_nodes_in_level[l][n1][:last_item[l][n1]+1]
@@ -115,7 +116,7 @@ def create_graph (a):
 
         if level_capacity[l] != 0:
             sum_of_probabilities = 0
-            for lt in ordered_levels[l+1:11]:
+            for lt in reverse_ordered_levels[l+1:11]:
                 sum_of_probabilities += p[lt] * nodes_in_level[lt]
 
             b = 0
@@ -124,12 +125,12 @@ def create_graph (a):
             level_capacity = np.zeros(11, dtype=np.int16)
             while abs(max_edges-sum_of_egdes) > 5:
                 sum_of_egdes = 0
-                for lt in ordered_levels[l+1:11]:
+                for lt in reverse_ordered_levels[l+1:11]:
                     level_capacity[lt] = round(p[lt] * (max_edges+b) / sum_of_probabilities * nodes_in_level[lt], 0)
                     sum_of_egdes += int(level_capacity[lt])
                 b = max_edges-sum_of_egdes
 
-            for lt in ordered_levels[l+1:11]:
+            for lt in reverse_ordered_levels[l+1:11]:
                 if sum_of_egdes < 5000:
                     level_capacity[lt] += 1
                     sum_of_egdes += 1
