@@ -70,7 +70,7 @@ def create_graph (a):
     level_capacity = np.zeros(11, dtype=np.int16)
     while abs(max_edges-sum_of_egdes) > 5:
         sum_of_egdes = 0
-        for l in range(1,11,1):
+        for l in ordered_levels[1:]:
             level_capacity[l] = round(p[l] * (max_edges+b) / sum_of_probabilities, 0)
             sum_of_egdes += int(level_capacity[l])
         b = max_edges-sum_of_egdes
@@ -88,58 +88,62 @@ def create_graph (a):
     in_capacity_used = np.zeros(1024, dtype=np.int8)
     out_capacity_used = np.zeros(1024, dtype=np.int8)
     created_edges = 0
-    for l in reverse_ordered_levels[:11]:
+    for l in reverse_ordered_levels[:10]:
         out_permitted_nodes = []
         for n1 in nodes:
-            related_as_in_nodes = related_nodes_in_level[l][n1][:last_item[l][n1]+1]
+            related_as_in_nodes = related_nodes_in_level[l][n1][:last_item[l][n1]]
             in_c = 0
             for n2 in related_as_in_nodes:
                 if in_capacity_used[n2] < 5:
                     in_c += 1
+                    if in_c == 5:
+                        break
             out_c = out_capacity_used[n1]
             while out_c < 5 and in_c > 0:
                 out_c += 1
                 in_c -= 1
                 out_permitted_nodes.append(n1)
-        random.shuffle()
+        random.shuffle(out_permitted_nodes)
 
         while level_capacity[l] != 0 and out_permitted_nodes:
             n1 = out_permitted_nodes.pop()
-            related_as_in_nodes = related_nodes_in_level[l][n1][:last_item[l][n1]+1]
+            related_as_in_nodes = related_nodes_in_level[l][n1][:last_item[l][n1]]
             for n2 in related_as_in_nodes:
-                if in_capacity_used[n2] < 5:
+                if (not g.has_edge(n1, n2)) and in_capacity_used[n2] < 5:
                     g.add_edge(n1,n2)
                     level_capacity[l] -= 1
                     in_capacity_used[n2] += 1
                     out_capacity_used[n1] += 1
                     created_edges += 1
-
-        if level_capacity[l] != 0:
-            sum_of_probabilities = 0
-            for lt in reverse_ordered_levels[l+1:11]:
-                sum_of_probabilities += p[lt] * nodes_in_level[lt]
-
-            b = 0
-            sum_of_egdes = 0
-            max_edges = 5000 - created_edges
-            level_capacity = np.zeros(11, dtype=np.int16)
-            while abs(max_edges-sum_of_egdes) > 5:
-                sum_of_egdes = 0
-                for lt in reverse_ordered_levels[l+1:11]:
-                    level_capacity[lt] = round(p[lt] * (max_edges+b) / sum_of_probabilities * nodes_in_level[lt], 0)
-                    sum_of_egdes += int(level_capacity[lt])
-                b = max_edges-sum_of_egdes
-
-            for lt in reverse_ordered_levels[l+1:11]:
-                if sum_of_egdes < 5000:
-                    level_capacity[lt] += 1
-                    sum_of_egdes += 1
-                if sum_of_egdes > 5000 and level_capacity[lt] != 0:
-                    level_capacity[lt] -= 1
-                    sum_of_egdes -= 1
-                if sum_of_egdes == 5000:
                     break
 
+        if level_capacity[l] != 0:
+            if l != 10:
+                sum_of_probabilities = 0
+                for lt in reverse_ordered_levels[l:10]:
+                    sum_of_probabilities += p[lt]
+
+                b = 0
+                sum_of_egdes = 0
+                max_edges = 5000 - created_edges
+                while abs(max_edges-sum_of_egdes) > 5:
+                    sum_of_egdes = 0
+                    for lt in reverse_ordered_levels[l:10]:
+                        level_capacity[lt] = round(p[lt] * (max_edges+b) / sum_of_probabilities, 0)
+                        sum_of_egdes += int(level_capacity[lt])
+                    b = max_edges-sum_of_egdes
+
+                for lt in reverse_ordered_levels[l:10]:
+                    if sum_of_egdes < 5000:
+                        level_capacity[lt] += 1
+                        sum_of_egdes += 1
+                    if sum_of_egdes > 5000 and level_capacity[lt] != 0:
+                        level_capacity[lt] -= 1
+                        sum_of_egdes -= 1
+                    if sum_of_egdes == 5000:
+                        break
+            else:
+                print("Jing")
     return g
 
 def create_node_pairs(g):
