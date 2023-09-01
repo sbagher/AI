@@ -168,8 +168,7 @@ def create_graph (a):
                         sum_of_egdes -= 1
                     if sum_of_egdes == 5000:
                         break
-            else:
-                print("Jing")
+
     return g
 
 def create_node_pairs(g):
@@ -210,13 +209,14 @@ def run_search(g, node_pairs):
                     break
     return SuccessHopsSum, SuccessSum
 
+
 ax1, ax2, ax3 = [], [], []
 for aa in np.arange (0.1, 10.1, 0.1):
     a = round(aa,1)
     start = time.time()
     g = create_graph (a)
     for n in g.nodes():
-        if g.in_degree(n)!=5 and g.out_degree(n)!=5:
+        if g.in_degree(n)!=5:
             print ("Node:", n,"out_degree:",g.out_degree(n), "in_degree:",g.in_degree(n))
         if g.out_degree(n)!=5:
             print ("Node:", n,"out_degree:",g.out_degree(n))
