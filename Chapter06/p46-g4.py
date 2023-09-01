@@ -187,8 +187,11 @@ def create_node_pairs(g):
 def run_search(g, node_pairs):
     SuccessHopsSum = 0
     SuccessSum = 0
+    shortest_path_length_sum = 0
     for s, t in node_pairs:
         hops = 0
+        n1 = s
+        n2 = t
         while True:
             hops += 1
             sn = set(g.neighbors(s))
@@ -201,66 +204,55 @@ def run_search(g, node_pairs):
             if um == t:
                 SuccessHopsSum += hops
                 SuccessSum += 1
+                tmp = nx.shortest_path_length(g, source=n1, target=n2)
+                if tmp != 0:
+                    shortest_path_length_sum += tmp
                 break
             else:
                 if h(s, t) > h(um, t):
                     s = um
                 else:
                     break
-    return SuccessHopsSum, SuccessSum
+    return SuccessHopsSum, SuccessSum , shortest_path_length_sum
 
 
-ax1, ax2, ax3, ax4, ax5 = [], [], [], [], []
-for aa in np.arange (0.1, 10.1, 0.1):
+ax1, ax2, ax3, ax4 = [], [], [], []
+for aa in np.arange (0.1, 1.1, 0.1):
     a = round(aa,1)
     start = time.time()
     g = create_graph (a)
-    shortest_path_length_sum = 0
-    nodes = list(g.nodes())
-    shortest_path_numbers = 0
-    for n1 in nodes:
-        for n2 in nodes:
-            tmp = nx.shortest_path_length(g, source=n1, target=n2)
-            if tmp != 0:
-                shortest_path_length_sum += tmp
-                shortest_path_numbers += 1
     node_pairs = create_node_pairs(g)
-    s, n = run_search(g, node_pairs)
+    s, n, spls = run_search(g, node_pairs)
     end = time.time()
     print(a, end - start)    
     ax1.append(a)
-    tmp = len(nodes)-1
     if n==0:
         ax2.append(0.0)
         ax3.append(0.0)
         ax4.append(0.0)
-        ax5.append(0.0)
     else:
         ax2.append(s/n)
         ax3.append(n/1000)
-        ax4.append(shortest_path_length_sum/(tmp*tmp))
-        ax5.append(shortest_path_length_sum/shortest_path_numbers)
+        ax4.append(spls/n)
 
 plt.rcParams["figure.figsize"] = (14,8)
-plt.subplot(1, 3, 1)
+plt.subplot(1, 3, 2)
 plt.plot(ax1, ax2, color ='green', linewidth=1)
 plt.title(f'Average Path Hops Histogram')
 plt.xlabel('α')
 plt.ylabel('Average Path Length')
 
-plt.subplot(1, 3, 2)
+plt.subplot(1, 3, 3)
 plt.plot(ax1, ax3, color ='blue', linewidth=1)
 plt.title(f'Search Success Probability Histogram')
 plt.xlabel('α')
 plt.ylabel('Search Success Probability')
 
-plt.subplot(1, 3, 3)
-plt.plot(ax1, ax4, color ='maroon', linewidth=1, label = "Divded to All Path")
-plt.plot(ax1, ax4, color ='red', linewidth=1, label = "Divded to All Non-Zero Path")
+plt.subplot(1, 3, 1)
+plt.plot(ax1, ax4, color ='red', linewidth=1)
 plt.title(f'Average Shortest Path Length Histogram')
 plt.xlabel('α')
 plt.ylabel('Average Shortest Path Length')
-plt.legend()
 
 
 plt.show()
