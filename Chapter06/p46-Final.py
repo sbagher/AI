@@ -217,7 +217,7 @@ def run_search(g, node_pairs):
 
 
 ax1, ax2, ax3, ax4 = [], [], [], []
-for aa in np.arange (0.1, 1.1, 0.1):
+for aa in np.arange (0.1, 10.1, 0.1):
     a = round(aa,1)
     start = time.time()
     g = create_graph (a)
