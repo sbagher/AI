@@ -96,9 +96,7 @@ def celf(g,k,p=0.1,mc=1000):
         time for each iteration
     """
       
-    # --------------------
-    # Find the first node with greedy algorithm
-    # --------------------
+    # ---- Step 1: Find the first node with greedy algorithm ----
     
     # Calculate the first iteration sorted list
     start_time = time.time() 
@@ -111,9 +109,7 @@ def celf(g,k,p=0.1,mc=1000):
     S, spread, SPREAD = [Q[0][0]], Q[0][1], [Q[0][1]]
     Q, LOOKUPS, timelapse = Q[1:], [g.vcount()], [time.time()-start_time]
     
-    # --------------------
-    # Find the next k-1 nodes using the list-sorting procedure
-    # --------------------
+    # ---- Step 2: Find the next k-1 nodes using the list-sorting procedure
     
     for _ in range(k-1):    
 
@@ -154,5 +150,5 @@ celf_output   = celf(G,10,p = 0.1,mc = 1000)
 greedy_output = greedy(G,10,p = 0.1,mc = 1000)
 
 # Print resulting seed sets
-print("celf output:   " + str(celf_output[0]))
-print("greedy output: " + str(greedy_output[0]))
+print("optimal seed set with celf   : " + str(celf_output[0]))
+print("optimal seed set with greedy : " + str(greedy_output[0]))
