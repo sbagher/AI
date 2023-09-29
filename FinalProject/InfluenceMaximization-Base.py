@@ -8,11 +8,15 @@ import numpy as np
 import time
 from igraph import *
 
-def IC(g,S,p=0.5,mc=1000):
+def IndependentCascadingModel(g,S,p=0.5,mc=1000):
     """
-    Input:  graph object, set of seed nodes, propagation probability
-            and the number of Monte-Carlo simulations
-    Output: average number of nodes influenced by the seed nodes
+    Input:
+        g : graph
+        S : set of seed nodes
+        p : propagation probability
+        mc: number of Monte-Carlo simulations
+    Output:
+        average number of nodes influenced by the seed nodes
     """
     
     # Loop over the Monte-Carlo Simulations
@@ -41,10 +45,17 @@ def IC(g,S,p=0.5,mc=1000):
         
     return(np.mean(spread))
 
-def greedy(g,k,p=0.1,mc=1000):
+def greedy(g, k, p=0.1, mc=1000):
     """
-    Input:  graph object, number of seed nodes
-    Output: optimal seed set, resulting spread, time for each iteration
+    Input:
+        g : graph
+        k : number of seed nodes
+        p : propagation probability
+        mc: number of Monte-Carlo simulations
+    Output:
+        optimal seed set
+        resulting spread
+        time for each iteration
     """
 
     S, spread, timelapse, start_time = [], [], [], time.time()
@@ -57,7 +68,7 @@ def greedy(g,k,p=0.1,mc=1000):
         for j in set(range(g.vcount()))-set(S):
 
             # Get the spread
-            s = IC(g,S + [j],p,mc)
+            s = IndependentCascadingModel(g,S + [j],p,mc)
 
             # Update the winning node and spread so far
             if s > best_spread:
@@ -74,17 +85,22 @@ def greedy(g,k,p=0.1,mc=1000):
 
 def celf(g,k,p=0.1,mc=1000):  
     """
-    Input:  graph object, number of seed nodes
-    Output: optimal seed set, resulting spread, time for each iteration
+    Input:
+        g : graph
+        k : number of seed nodes
+        p : propagation probability
+        mc: number of Monte-Carlo simulations
+    Output:
+        optimal seed set
+        resulting spread
+        time for each iteration
     """
       
-    # --------------------
-    # Find the first node with greedy algorithm
-    # --------------------
+    # ---- Step 1: Find the first node with greedy algorithm ----
     
     # Calculate the first iteration sorted list
     start_time = time.time() 
-    marg_gain = [IC(g,[node],p,mc) for node in range(g.vcount())]
+    marg_gain = [IndependentCascadingModel(g,[node],p,mc) for node in range(g.vcount())]
 
     # Create the sorted list of nodes and their marginal gain 
     Q = sorted(zip(range(g.vcount()),marg_gain), key=lambda x: x[1],reverse=True)
@@ -93,9 +109,7 @@ def celf(g,k,p=0.1,mc=1000):
     S, spread, SPREAD = [Q[0][0]], Q[0][1], [Q[0][1]]
     Q, LOOKUPS, timelapse = Q[1:], [g.vcount()], [time.time()-start_time]
     
-    # --------------------
-    # Find the next k-1 nodes using the list-sorting procedure
-    # --------------------
+    # ---- Step 2: Find the next k-1 nodes using the list-sorting procedure
     
     for _ in range(k-1):    
 
@@ -110,7 +124,7 @@ def celf(g,k,p=0.1,mc=1000):
             current = Q[0][0]
             
             # Evaluate the spread function and store the marginal gain in the list
-            Q[0] = (current,IC(g,S+[current],p,mc) - spread)
+            Q[0] = (current,IndependentCascadingModel(g,S+[current],p,mc) - spread)
 
             # Re-sort the list
             Q = sorted(Q, key = lambda x: x[1], reverse = True)
@@ -136,5 +150,5 @@ celf_output   = celf(G,10,p = 0.1,mc = 1000)
 greedy_output = greedy(G,10,p = 0.1,mc = 1000)
 
 # Print resulting seed sets
-print("celf output:   " + str(celf_output[0]))
-print("greedy output: " + str(greedy_output[0]))
+print("optimal seed set with celf   : " + str(celf_output[0]))
+print("optimal seed set with greedy : " + str(greedy_output[0]))
