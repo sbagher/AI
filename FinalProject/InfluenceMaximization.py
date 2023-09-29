@@ -110,7 +110,7 @@ def celf(g,k,p=0.1,mc=1000):
             current = Q[0][0]
             
             # Evaluate the spread function and store the marginal gain in the list
-            Q[0] = (current,IC(g,S+[current],p,mc) - spread)
+            Q[0] = (current,IndependentCascadingModel(g,S+[current],p,mc) - spread)
 
             # Re-sort the list
             Q = sorted(Q, key = lambda x: x[1], reverse = True)
