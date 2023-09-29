@@ -10,9 +10,13 @@ from igraph import *
 
 def IndependentCascadingModel(g,S,p=0.5,mc=1000):
     """
-    Input:  graph object, set of seed nodes, propagation probability
-            and the number of Monte-Carlo simulations
-    Output: average number of nodes influenced by the seed nodes
+    Input:
+        g : graph
+        S : set of seed nodes
+        p : propagation probability
+        mc: number of Monte-Carlo simulations
+    Output:
+        average number of nodes influenced by the seed nodes
     """
     
     # Loop over the Monte-Carlo Simulations
@@ -41,11 +45,17 @@ def IndependentCascadingModel(g,S,p=0.5,mc=1000):
         
     return(np.mean(spread))
 
-def greedy(g,k,p=0.1,mc=1000):
+def greedy(g, k, p=0.1, mc=1000):
     """
-    Input:  graph object, number of seed nodes, propagation probability
-            and the number of Monte-Carlo simulations
-    Output: optimal seed set, resulting spread, time for each iteration
+    Input:
+        g : graph
+        k : number of seed nodes
+        p : propagation probability
+        mc: number of Monte-Carlo simulations
+    Output:
+        optimal seed set
+        resulting spread
+        time for each iteration
     """
 
     S, spread, timelapse, start_time = [], [], [], time.time()
@@ -75,9 +85,15 @@ def greedy(g,k,p=0.1,mc=1000):
 
 def celf(g,k,p=0.1,mc=1000):  
     """
-    Input:  graph object, number of seed nodes, propagation probability
-            and the number of Monte-Carlo simulations
-    Output: optimal seed set, resulting spread, time for each iteration
+    Input:
+        g : graph
+        k : number of seed nodes
+        p : propagation probability
+        mc: number of Monte-Carlo simulations
+    Output:
+        optimal seed set
+        resulting spread
+        time for each iteration
     """
       
     # --------------------
