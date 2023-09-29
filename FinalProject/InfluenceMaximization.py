@@ -43,7 +43,8 @@ def IndependentCascadingModel(g,S,p=0.5,mc=1000):
 
 def greedy(g,k,p=0.1,mc=1000):
     """
-    Input:  graph object, number of seed nodes
+    Input:  graph object, number of seed nodes, propagation probability
+            and the number of Monte-Carlo simulations
     Output: optimal seed set, resulting spread, time for each iteration
     """
 
@@ -74,7 +75,8 @@ def greedy(g,k,p=0.1,mc=1000):
 
 def celf(g,k,p=0.1,mc=1000):  
     """
-    Input:  graph object, number of seed nodes
+    Input:  graph object, number of seed nodes, propagation probability
+            and the number of Monte-Carlo simulations
     Output: optimal seed set, resulting spread, time for each iteration
     """
       
