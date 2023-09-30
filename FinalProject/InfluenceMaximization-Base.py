@@ -1,7 +1,15 @@
 # Name: Saeed Baghershahi
 # Student Number: 102501002
 # Class: AI Applications in Social Networks
-# Assignment: Problem: Final, Chapter: 08, Book: "Practical Social Network Analysis with Python"
+# Assignment: Final Project (Influence Maximization), Book: "Practical Social Network Analysis with Python"
+"""
+Description:
+   Diffusion Model: Independent Cascading Model
+   Maximization Algorithm: greedy & celf
+   Graph: Erdős-Rényi(n=100, m=300, directed=True)
+   k: 10
+   Objective: Influence Maximization for 10 optimal seed set
+"""
 
 from random import uniform, seed
 import numpy as np
