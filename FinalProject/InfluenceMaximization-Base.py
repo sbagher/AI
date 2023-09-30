@@ -8,7 +8,7 @@ import numpy as np
 import time
 from igraph import *
 
-def IndependentCascadingModel(g,S,p=0.5,mc=1000):
+def IndependentCascadingModel(g, S, p=0.5, mc=1000):
     """
     Input:
         g : graph
@@ -83,7 +83,7 @@ def greedy(g, k, p=0.1, mc=1000):
 
     return(S,spread,timelapse)
 
-def celf(g,k,p=0.1,mc=1000):  
+def celf(g, k, p=0.1, mc=1000):  
     """
     Input:
         g : graph
@@ -144,7 +144,7 @@ def celf(g,k,p=0.1,mc=1000):
 
     return(S,SPREAD,timelapse,LOOKUPS)
 
-G = Graph.Erdos_Renyi(n=100,m=300,directed=True)
+G = Graph.Erdos_Renyi(n=100, m=300, directed=True)
 
 celf_output   = celf(G,10,p = 0.1,mc = 1000)
 greedy_output = greedy(G,10,p = 0.1,mc = 1000)
