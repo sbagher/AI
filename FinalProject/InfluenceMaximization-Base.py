@@ -6,7 +6,7 @@
 Description:
    Diffusion Model: Independent Cascading Model
    Maximization Algorithm: greedy & celf
-   Graph: Erdős-Rényi(n=100, m=300, directed=True)
+   Graph: directed Erdös–Rényi graph (n=100, m=300)
    k: 10
    Objective: Influence Maximization for 10 optimal seed set
 """
