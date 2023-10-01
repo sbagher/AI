@@ -76,7 +76,7 @@ def greedy(g, k, p=0.1, mc=1000):
         for j in set(range(g.vcount()))-set(S):
 
             # Get the spread
-            s = IndependentCascadingModel(g,S + [j],p,mc)
+            s = IndependentCascadingModel(g, S + [j], p, mc)
 
             # Update the winning node and spread so far
             if s > best_spread:
