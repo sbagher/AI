@@ -14,7 +14,7 @@ Description:
 from random import uniform, seed
 import numpy as np
 import time
-from igraph import *
+import networkx as nx
 
 def IndependentCascadingModel(g, S, p=0.5, mc=1000):
     """
@@ -41,8 +41,9 @@ def IndependentCascadingModel(g, S, p=0.5, mc=1000):
                 
                 # Determine neighbors that become infected
                 np.random.seed(i)
-                success = np.random.uniform(0,1,len(g.neighbors(node,mode="out"))) < p
-                new_ones += list(np.extract(success, g.neighbors(node,mode="out")))
+                successors = list(g.successors(node))
+                success = np.random.uniform(0,1,len(successors)) < p
+                new_ones += list(np.extract(success, successors))
 
             new_active = list(set(new_ones) - set(A))
             
@@ -73,7 +74,7 @@ def greedy(g, k, p=0.1, mc=1000):
 
         # Loop over nodes that are not yet in seed set to find biggest marginal gain
         best_spread = 0
-        for j in set(range(g.vcount()))-set(S):
+        for j in set(range(nx.number_of_nodes(g)))-set(S):
 
             # Get the spread
             s = IndependentCascadingModel(g, S + [j], p, mc)
@@ -108,14 +109,14 @@ def celf(g, k, p=0.1, mc=1000):
     
     # Calculate the first iteration sorted list
     start_time = time.time() 
-    marg_gain = [IndependentCascadingModel(g,[node],p,mc) for node in range(g.vcount())]
+    marg_gain = [IndependentCascadingModel(g,[node],p,mc) for node in range(nx.number_of_nodes(g))]
 
     # Create the sorted list of nodes and their marginal gain 
-    Q = sorted(zip(range(g.vcount()),marg_gain), key=lambda x: x[1],reverse=True)
+    Q = sorted(zip(range(nx.number_of_nodes(g)),marg_gain), key=lambda x: x[1],reverse=True)
 
     # Select the first node and remove from candidate list
     S, spread, SPREAD = [Q[0][0]], Q[0][1], [Q[0][1]]
-    Q, LOOKUPS, timelapse = Q[1:], [g.vcount()], [time.time()-start_time]
+    Q, LOOKUPS, timelapse = Q[1:], [nx.number_of_nodes(g)], [time.time()-start_time]
     
     # ---- Step 2: Find the next k-1 nodes using the list-sorting procedure
     
@@ -152,7 +153,7 @@ def celf(g, k, p=0.1, mc=1000):
 
     return(S,SPREAD,timelapse,LOOKUPS)
 
-G = Graph.Erdos_Renyi(n=100, m=300, directed=True)
+G = nx.gnm_random_graph(n=100, m=300, directed=True)
 
 celf_output   = celf(G,10,p = 0.1,mc = 1000)
 greedy_output = greedy(G,10,p = 0.1,mc = 1000)
