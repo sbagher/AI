@@ -281,18 +281,18 @@ def celf_nodes_count(g, k, p=0.1, mc=1000):
 
 G = CreateGraph()
 
-greedy_output = greedy_nodes_count (G, 10, p = 0.1, mc = 1000)
-celf_output   = celf_nodes_count   (G, 10, p = 0.1, mc = 1000)
+output_greedy_nodes_count, sgn  = greedy_nodes_count (G, 10, p = 0.1, mc = 1000)
+output_celf_nodes_count, scn, _ = celf_nodes_count   (G, 10, p = 0.1, mc = 1000)
 
 # Print resulting seed sets
 print("Algorith 1: Maximizing Number of Nodes:")
-print("optimal seed set with celf   : " + str(celf_output[0]))
-print("optimal seed set with greedy : " + str(greedy_output[0]))
+print("optimal seed set with greedy : " + str(output_greedy_nodes_count))
+print("optimal seed set with celf   : " + str(output_celf_nodes_count))
 
-greedy_output = greedy_edges_weight (G, 10, p = 0.1, mc = 1000)
-celf_output   = celf_edges_weight   (G, 10, p = 0.1, mc = 1000)
+output_greedy_edges_weight, sge  = greedy_edges_weight (G, 10, p = 0.1, mc = 1000)
+output_celf_edges_weight, sce, _ = celf_edges_weight   (G, 10, p = 0.1, mc = 1000)
 
 # Print resulting seed sets
 print("\nAlgorith 2: Maximizing Sum of Influence Weights:")
-print("optimal seed set with celf   : " + str(celf_output[0]))
-print("optimal seed set with greedy : " + str(greedy_output[0]))
+print("optimal seed set with greedy : " + str(output_greedy_edges_weight))
+print("optimal seed set with celf   : " + str(output_celf_edges_weight))
