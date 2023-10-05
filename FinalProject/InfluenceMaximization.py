@@ -26,7 +26,7 @@ def CreateGraph():
 
     return g
 
-def IndependentCascadingModel(g, S, p=0.5, mc=1000):
+def IndependentCascadingModel (g, S, p=0.5, mc=1000):
     """
     Input:
         g : graph
@@ -74,7 +74,7 @@ def IndependentCascadingModel(g, S, p=0.5, mc=1000):
 
     return(np.mean(spread_nodes_count), np.mean(spread_edges_weight))
 
-def greedy_edges_weight(g, k, p=0.1, mc=1000):
+def greedy_edges_weight (g, k, p=0.1, mc=1000):
     """
     Input:
         g : graph
@@ -87,31 +87,34 @@ def greedy_edges_weight(g, k, p=0.1, mc=1000):
         time for each iteration
     """
 
-    S, spread = [], []
+    S, WEIGHT_COUNT_MEAN, NODE_COUNT_MEAN = [], [], []
     
     # Find k nodes with largest marginal gain
     for _ in range(k):
 
         # Loop over nodes that are not yet in seed set to find biggest marginal gain
-        best_spread = 0
+        best_edges_weight_spread = 0
+        mean_influenced_nodes = 0
         for j in set(range(nx.number_of_nodes(g)))-set(S):
 
             # Get the spread
-            _, s = IndependentCascadingModel(g, S + [j], p, mc)
+            n, w = IndependentCascadingModel (g, S + [j], p, mc)
 
             # Update the winning node and spread so far
-            if s > best_spread:
-                best_spread, node = s, j
+            if w > best_edges_weight_spread:
+                best_edges_weight_spread, node = w, j
+                mean_influenced_nodes = n
 
         # Add the selected node to the seed set
         S.append(node)
         
         # Add estimated spread and elapsed time
-        spread.append(best_spread)
+        NODE_COUNT_MEAN.append(mean_influenced_nodes)
+        WEIGHT_COUNT_MEAN.append(best_edges_weight_spread)
 
-    return(S,spread)
+    return(S, NODE_COUNT_MEAN, WEIGHT_COUNT_MEAN)
 
-def greedy_nodes_count(g, k, p=0.1, mc=1000):
+def greedy_nodes_count (g, k, p=0.1, mc=1000):
     """
     Input:
         g : graph
@@ -124,29 +127,32 @@ def greedy_nodes_count(g, k, p=0.1, mc=1000):
         time for each iteration
     """
 
-    S, spread = [], []
+    S, WEIGHT_COUNT_MEAN, NODE_COUNT_MEAN = [], [], []
     
     # Find k nodes with largest marginal gain
     for _ in range(k):
 
         # Loop over nodes that are not yet in seed set to find biggest marginal gain
-        best_spread = 0
+        best_nodes_count_spread = 0
+        mean_influence_weight = 0
         for j in set(range(nx.number_of_nodes(g)))-set(S):
 
             # Get the spread
-            s, _ = IndependentCascadingModel(g, S + [j], p, mc)
+            n, w = IndependentCascadingModel(g, S + [j], p, mc)
 
             # Update the winning node and spread so far
-            if s > best_spread:
-                best_spread, node = s, j
+            if n > best_nodes_count_spread:
+                best_nodes_count_spread, node = n, j
+                mean_influence_weight = w
 
         # Add the selected node to the seed set
         S.append(node)
         
         # Add estimated spread and elapsed time
-        spread.append(best_spread)
+        NODE_COUNT_MEAN.append(best_nodes_count_spread)
+        WEIGHT_COUNT_MEAN.append(mean_influence_weight)
 
-    return(S,spread)
+    return(S, NODE_COUNT_MEAN, WEIGHT_COUNT_MEAN)
 
 def celf_edges_weight (g, k, p=0.1, mc=1000):
     """
@@ -164,22 +170,22 @@ def celf_edges_weight (g, k, p=0.1, mc=1000):
     # ---- Step 1: Find the first node with greedy algorithm ----
     
     # Calculate the first iteration sorted list
-    node_count = []
-    weight_count = []
+    node_count_mean = []
+    weight_count_mean = []
     for node in range(nx.number_of_nodes(g)):
         tmp1, tmp2 = IndependentCascadingModel(g,[node],p,mc)
         tmp1 = [tmp1]
         tmp2 = [tmp2]
-        node_count += tmp1
-        weight_count += tmp2
+        node_count_mean += tmp1
+        weight_count_mean += tmp2
 
     # Create the sorted list of nodes and their marginal gain 
-    Q = sorted(zip(range(nx.number_of_nodes(g)), node_count, weight_count), key=lambda x: (x[2], x[1]), reverse=True)
+    Q = sorted(zip(range(nx.number_of_nodes(g)), node_count_mean, weight_count_mean), key=lambda x: (x[2], x[1]), reverse=True)
 
     # Select the first node and remove from candidate list
     S, spread = [Q[0][0]], Q[0][2]
-    NODE_COUNT = [Q[0][1]]
-    WEIGHT_COUNT = [Q[0][2]]
+    NODE_COUNT_MEAN = [Q[0][1]]
+    WEIGHT_COUNT_MEAN = [Q[0][2]]
     Q = Q[1:]
     
     # ---- Step 2: Find the next k-1 nodes using the list-sorting procedure
@@ -205,13 +211,13 @@ def celf_edges_weight (g, k, p=0.1, mc=1000):
         # Select the next node
         spread += Q[0][2]
         S.append(Q[0][0])
-        NODE_COUNT.append(Q[0][1])
-        WEIGHT_COUNT.append(spread)
+        NODE_COUNT_MEAN.append(Q[0][1])
+        WEIGHT_COUNT_MEAN.append(spread)
 
         # Remove the selected node from the list
         Q = Q[1:]
 
-    return(S, NODE_COUNT, WEIGHT_COUNT)
+    return(S, NODE_COUNT_MEAN, WEIGHT_COUNT_MEAN)
 
 def celf_nodes_count(g, k, p=0.1, mc=1000):
     """
@@ -229,22 +235,22 @@ def celf_nodes_count(g, k, p=0.1, mc=1000):
     # ---- Step 1: Find the first node with greedy algorithm ----
     
     # Calculate the first iteration sorted list
-    node_count = []
-    weight_count = []
+    node_count_mean = []
+    weight_count_mean = []
     for node in range(nx.number_of_nodes(g)):
         tmp1, tmp2 = IndependentCascadingModel(g,[node],p,mc)
         tmp1 = [tmp1]
         tmp2 = [tmp2]
-        node_count += tmp1
-        weight_count += tmp2
+        node_count_mean += tmp1
+        weight_count_mean += tmp2
 
     # Create the sorted list of nodes and their marginal gain 
-    Q = sorted(zip(range(nx.number_of_nodes(g)), node_count, weight_count), key=lambda x: (x[1], x[2]), reverse=True)
+    Q = sorted(zip(range(nx.number_of_nodes(g)), node_count_mean, weight_count_mean), key=lambda x: (x[1], x[2]), reverse=True)
 
     # Select the first node and remove from candidate list
     S, spread = [Q[0][0]], Q[0][1]
-    NODE_COUNT = [Q[0][1]]
-    WEIGHT_COUNT = [Q[0][2]]
+    NODE_COUNT_MEAN = [Q[0][1]]
+    WEIGHT_COUNT_MEAN = [Q[0][2]]
     Q = Q[1:]
     
     # ---- Step 2: Find the next k-1 nodes using the list-sorting procedure
@@ -270,38 +276,40 @@ def celf_nodes_count(g, k, p=0.1, mc=1000):
         # Select the next node
         spread += Q[0][1]
         S.append(Q[0][0])
-        NODE_COUNT.append(spread)
-        WEIGHT_COUNT.append(Q[0][2])
+        NODE_COUNT_MEAN.append(spread)
+        WEIGHT_COUNT_MEAN.append(Q[0][2])
 
         # Remove the selected node from the list
         Q = Q[1:]
 
-    return(S, NODE_COUNT, WEIGHT_COUNT)
+    return(S, NODE_COUNT_MEAN, WEIGHT_COUNT_MEAN)
 
 G = CreateGraph()
 
 print("\nAlgorith 1, Maximizing Number of Nodes (All Edges with Same Weights):")
 print("---------------------------------------------------------------------")
 print("Greedy:")
-optimal_seed_set, spread  = greedy_nodes_count (G, 10, p = 0.1, mc = 1000)
+optimal_seed_set, node_count_mean, weight_count_mean  = greedy_nodes_count (G, 10, p = 0.1, mc = 1000)
 print("\tOptimal Seed Set: " + str(optimal_seed_set))
-print("\tSpread: " + str(spread))
+print("\tMean Influenced Nodes: " + str(node_count_mean))
+print("\tMean Influence Weight: " + str(weight_count_mean))
 
 print("CELF:")
-optimal_seed_set, node_count, weight_count = celf_nodes_count (G, 10, p = 0.1, mc = 1000)
+optimal_seed_set, node_count_mean, weight_count_mean = celf_nodes_count (G, 10, p = 0.1, mc = 1000)
 print("\tOptimal Seed Set: " + str(optimal_seed_set))
-print("\tMean Influenced Nodes: " + str(node_count))
-print("\tMean Influence Weight: " + str(weight_count))
+print("\tMean Influenced Nodes: " + str(node_count_mean))
+print("\tMean Influence Weight: " + str(weight_count_mean))
 
 print("\nAlgorith 2, Maximizing Sum of Influence Weights (All Edges with Different Weights):")
 print("-----------------------------------------------------------------------------------")
 print("Greedy:")
-optimal_seed_set, spread  = greedy_edges_weight (G, 10, p = 0.1, mc = 1000)
+optimal_seed_set, node_count_mean, weight_count_mean  = greedy_edges_weight (G, 10, p = 0.1, mc = 1000)
 print("\tOptimal Seed Set: " + str(optimal_seed_set))
-print("\tSpread: " + str(spread))
+print("\tMean Influenced Nodes: " + str(node_count_mean))
+print("\tMean Influence Weight: " + str(weight_count_mean))
 
 print("CELF:")
-optimal_seed_set, node_count, weight_count = celf_edges_weight (G, 10, p = 0.1, mc = 1000)
+optimal_seed_set, node_count_mean, weight_count_mean = celf_edges_weight (G, 10, p = 0.1, mc = 1000)
 print("\tOptimal Seed Set: " + str(optimal_seed_set))
-print("\tMean Influenced Nodes: " + str(node_count))
-print("\tMean Influence Weight: " + str(weight_count))
+print("\tMean Influenced Nodes: " + str(node_count_mean))
+print("\tMean Influence Weight: " + str(weight_count_mean))
