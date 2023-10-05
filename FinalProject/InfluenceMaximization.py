@@ -230,33 +230,28 @@ def celf_nodes_count(g, k, p=0.1, mc=1000):
     # Calculate the first iteration sorted list
     marg_gain = []
     for node in range(nx.number_of_nodes(g)):
-        tmp, _ = IndependentCascadingModel(g,[node],p,mc)
+        tmp, _ = IndependentCascadingModel (g, [node], p, mc)
         tmp = [tmp]
         marg_gain += tmp
 
     # Create the sorted list of nodes and their marginal gain 
-    Q = sorted(zip(range(nx.number_of_nodes(g)),marg_gain), key=lambda x: x[1],reverse=True)
+    Q = sorted(zip(range(nx.number_of_nodes(g)),marg_gain), key=lambda x: x[1], reverse=True)
 
     # Select the first node and remove from candidate list
     S, spread, SPREAD = [Q[0][0]], Q[0][1], [Q[0][1]]
-    Q, LOOKUPS = Q[1:], [nx.number_of_nodes(g)]
+    Q = Q[1:]
     
     # ---- Step 2: Find the next k-1 nodes using the list-sorting procedure
     
     for _ in range(k-1):    
 
-        check, node_lookup = False, 0
-        
+        check = False
         while not check:
-            
-            # Count the number of times the spread is computed
-            node_lookup += 1
-            
             # Recalculate spread of top node
             current = Q[0][0]
-            
+
             # Evaluate the spread function and store the marginal gain in the list
-            tmp, _ = IndependentCascadingModel(g,S+[current],p,mc)
+            tmp, _ = IndependentCascadingModel (g, S+[current], p, mc)
             Q[0] = (current, tmp - spread)
 
             # Re-sort the list
@@ -269,12 +264,11 @@ def celf_nodes_count(g, k, p=0.1, mc=1000):
         spread += Q[0][1]
         S.append(Q[0][0])
         SPREAD.append(spread)
-        LOOKUPS.append(node_lookup)
 
         # Remove the selected node from the list
         Q = Q[1:]
 
-    return(S,SPREAD,LOOKUPS)
+    return(S,SPREAD)
 
 
 G = CreateGraph()
@@ -290,14 +284,14 @@ print("CELF:")
 optimal_seed_set, spread, _ = celf_nodes_count (G, 10, p = 0.1, mc = 1000)
 print("\tOptimal Seed Set: " + str(optimal_seed_set))
 print("\tSpread: " + str(spread))
-
+"""
 print("\nAlgorith 2, Maximizing Sum of Influence Weights (All Edges with Different Weights):")
 print("-----------------------------------------------------------------------------------")
 print("Greedy:")
 optimal_seed_set, spread  = greedy_edges_weight (G, 10, p = 0.1, mc = 1000)
 print("\tOptimal Seed Set: " + str(optimal_seed_set))
 print("\tSpread: " + str(spread))
-
+"""
 print("CELF:")
 optimal_seed_set, spread, _ = celf_edges_weight (G, 10, p = 0.1, mc = 1000)
 print("\tOptimal Seed Set: " + str(optimal_seed_set))
