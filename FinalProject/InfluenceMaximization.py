@@ -167,7 +167,6 @@ def celf_edges_weight(g, k, p=0.1, mc=1000):
     marg_gain = []
     for node in range(nx.number_of_nodes(g)):
         _, tmp = IndependentCascadingModel(g,[node],p,mc)
-        tmp = [tmp]
         marg_gain += tmp
 
     # Create the sorted list of nodes and their marginal gain 
@@ -231,7 +230,6 @@ def celf_nodes_count(g, k, p=0.1, mc=1000):
     marg_gain = []
     for node in range(nx.number_of_nodes(g)):
         tmp, _ = IndependentCascadingModel(g,[node],p,mc)
-        tmp = [tmp]
         marg_gain += tmp
 
     # Create the sorted list of nodes and their marginal gain 
@@ -287,7 +285,7 @@ print("\tOptimal Seed Set: " + str(optimal_seed_set))
 print("\tSpread: " + str(spread))
 """
 print("CELF:")
-optimal_seed_set, spread, _ = celf_nodes_count   (G, 10, p = 0.1, mc = 1000)
+optimal_seed_set, spread, _ = celf_nodes_count (G, 10, p = 0.1, mc = 1000)
 print("\tOptimal Seed Set: " + str(optimal_seed_set))
 print("\tSpread: " + str(spread))
 
@@ -299,6 +297,6 @@ print("\tOptimal Seed Set: " + str(optimal_seed_set))
 print("\tSpread: " + str(spread))
 
 print("CELF:")
-optimal_seed_set, spread, _ = celf_edges_weight   (G, 10, p = 0.1, mc = 1000)
+optimal_seed_set, spread, _ = celf_edges_weight (G, 10, p = 0.1, mc = 1000)
 print("\tOptimal Seed Set: " + str(optimal_seed_set))
 print("\tSpread: " + str(spread))
