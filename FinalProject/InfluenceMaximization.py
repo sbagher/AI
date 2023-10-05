@@ -193,7 +193,6 @@ def celf_edges_weight(g, k, p=0.1, mc=1000):
             
             # Evaluate the spread function and store the marginal gain in the list
             _, tmp = IndependentCascadingModel(g,S+[current],p,mc)
-            tmp = [tmp]
             Q[0] = (current, tmp - spread)
 
             # Re-sort the list
@@ -258,7 +257,6 @@ def celf_nodes_count(g, k, p=0.1, mc=1000):
             
             # Evaluate the spread function and store the marginal gain in the list
             tmp, _ = IndependentCascadingModel(g,S+[current],p,mc)
-            tmp = [tmp]
             Q[0] = (current, tmp - spread)
 
             # Re-sort the list
@@ -280,27 +278,27 @@ def celf_nodes_count(g, k, p=0.1, mc=1000):
 
 
 G = CreateGraph()
-
+"""
 print("\nAlgorith 1, Maximizing Number of Nodes (All Edges with Same Weights):")
 print("---------------------------------------------------------------------")
-print("\tGreedy:")
+print("Greedy:")
 optimal_seed_set, spread  = greedy_nodes_count (G, 10, p = 0.1, mc = 1000)
-print("\t\tOptimal Seed Set: " + str(optimal_seed_set))
-print("\t\tSpead: " + str(spread))
-
-print("\tCELF:")
+print("\tOptimal Seed Set: " + str(optimal_seed_set))
+print("\tSpread: " + str(spread))
+"""
+print("CELF:")
 optimal_seed_set, spread, _ = celf_nodes_count   (G, 10, p = 0.1, mc = 1000)
-print("\t\tOptimal Seed Set: " + str(optimal_seed_set))
-print("\t\tSpead: " + str(spread))
+print("\tOptimal Seed Set: " + str(optimal_seed_set))
+print("\tSpread: " + str(spread))
 
 print("\nAlgorith 2, Maximizing Sum of Influence Weights (All Edges with Different Weights):")
 print("-----------------------------------------------------------------------------------")
-print("\tGreedy:")
+print("Greedy:")
 optimal_seed_set, spread  = greedy_edges_weight (G, 10, p = 0.1, mc = 1000)
-print("\t\tOptimal Seed Set: " + str(optimal_seed_set))
-print("\t\tSpead: " + str(spread))
+print("\tOptimal Seed Set: " + str(optimal_seed_set))
+print("\tSpread: " + str(spread))
 
-print("\tCELF:")
+print("CELF:")
 optimal_seed_set, spread, _ = celf_edges_weight   (G, 10, p = 0.1, mc = 1000)
-print("\t\tOptimal Seed Set: " + str(optimal_seed_set))
-print("\t\tSpead: " + str(spread))
+print("\tOptimal Seed Set: " + str(optimal_seed_set))
+print("\tSpread: " + str(spread))
