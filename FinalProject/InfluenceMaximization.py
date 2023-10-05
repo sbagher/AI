@@ -148,7 +148,7 @@ def greedy_nodes_count(g, k, p=0.1, mc=1000):
 
     return(S,spread)
 
-def celf_edges_weight(g, k, p=0.1, mc=1000):  
+def celf_edges_weight (g, k, p=0.1, mc=1000):
     """
     Input:
         g : graph
@@ -164,81 +164,22 @@ def celf_edges_weight(g, k, p=0.1, mc=1000):
     # ---- Step 1: Find the first node with greedy algorithm ----
     
     # Calculate the first iteration sorted list
-    marg_gain = []
+    node_count = []
+    weight_count = []
     for node in range(nx.number_of_nodes(g)):
-        _, tmp = IndependentCascadingModel(g,[node],p,mc)
-        tmp = [tmp]
-        marg_gain += tmp
+        tmp1, tmp2 = IndependentCascadingModel(g,[node],p,mc)
+        tmp1 = [tmp1]
+        tmp2 = [tmp2]
+        node_count += tmp1
+        weight_count += tmp2
 
     # Create the sorted list of nodes and their marginal gain 
-    Q = sorted(zip(range(nx.number_of_nodes(g)),marg_gain), key=lambda x: x[1],reverse=True)
+    Q = sorted(zip(range(nx.number_of_nodes(g)), node_count, weight_count), key=lambda x: (x[2], x[1]), reverse=True)
 
     # Select the first node and remove from candidate list
-    S, spread, SPREAD = [Q[0][0]], Q[0][1], [Q[0][1]]
-    Q, LOOKUPS = Q[1:], [nx.number_of_nodes(g)]
-    
-    # ---- Step 2: Find the next k-1 nodes using the list-sorting procedure
-    
-    for _ in range(k-1):    
-
-        check, node_lookup = False, 0
-        
-        while not check:
-            
-            # Count the number of times the spread is computed
-            node_lookup += 1
-            
-            # Recalculate spread of top node
-            current = Q[0][0]
-            
-            # Evaluate the spread function and store the marginal gain in the list
-            _, tmp = IndependentCascadingModel(g,S+[current],p,mc)
-            Q[0] = (current, tmp - spread)
-
-            # Re-sort the list
-            Q = sorted(Q, key = lambda x: x[1], reverse = True)
-
-            # Check if previous top node stayed on top after the sort
-            check = (Q[0][0] == current)
-
-        # Select the next node
-        spread += Q[0][1]
-        S.append(Q[0][0])
-        SPREAD.append(spread)
-        LOOKUPS.append(node_lookup)
-
-        # Remove the selected node from the list
-        Q = Q[1:]
-
-    return(S,SPREAD,LOOKUPS)
-
-def celf_nodes_count(g, k, p=0.1, mc=1000):  
-    """
-    Input:
-        g : graph
-        k : number of seed nodes
-        p : propagation probability
-        mc: number of Monte-Carlo simulations
-    Output:
-        optimal seed set
-        resulting spread
-        time for each iteration
-    """
-      
-    # ---- Step 1: Find the first node with greedy algorithm ----
-    
-    # Calculate the first iteration sorted list
-    marg_gain = []
-    for node in range(nx.number_of_nodes(g)):
-        tmp, _ = IndependentCascadingModel (g, [node], p, mc)
-        tmp = [tmp]
-        marg_gain += tmp
-
-    # Create the sorted list of nodes and their marginal gain 
-    Q = sorted(zip(range(nx.number_of_nodes(g)),marg_gain), key=lambda x: x[1], reverse=True)
-
-    # Select the first node and remove from candidate list
-    S, spread, SPREAD = [Q[0][0]], Q[0][1], [Q[0][1]]
+    S, spread = [Q[0][0]], Q[0][2]
+    NODE_COUNT = [Q[0][1]]
+    WEIGHT_COUNT = [Q[0][2]]
     Q = Q[1:]
     
     # ---- Step 2: Find the next k-1 nodes using the list-sorting procedure
@@ -247,15 +188,81 @@ def celf_nodes_count(g, k, p=0.1, mc=1000):
 
         check = False
         while not check:
+            
             # Recalculate spread of top node
             current = Q[0][0]
-
+            
             # Evaluate the spread function and store the marginal gain in the list
-            tmp, _ = IndependentCascadingModel (g, S+[current], p, mc)
-            Q[0] = (current, tmp - spread)
+            tmp1, tmp2 = IndependentCascadingModel(g,S+[current],p,mc)
+            Q[0] = (current, tmp1, tmp2 - spread)
 
             # Re-sort the list
-            Q = sorted(Q, key = lambda x: x[1], reverse = True)
+            Q = sorted(Q, key = lambda x: (x[2], x[1]), reverse = True)
+
+            # Check if previous top node stayed on top after the sort
+            check = (Q[0][0] == current)
+
+        # Select the next node
+        spread += Q[0][2]
+        S.append(Q[0][0])
+        NODE_COUNT.append(Q[0][1])
+        WEIGHT_COUNT.append(spread)
+
+        # Remove the selected node from the list
+        Q = Q[1:]
+
+    return(S, NODE_COUNT, WEIGHT_COUNT)
+
+def celf_nodes_count(g, k, p=0.1, mc=1000):
+    """
+    Input:
+        g : graph
+        k : number of seed nodes
+        p : propagation probability
+        mc: number of Monte-Carlo simulations
+    Output:
+        optimal seed set
+        resulting spread
+        time for each iteration
+    """
+      
+    # ---- Step 1: Find the first node with greedy algorithm ----
+    
+    # Calculate the first iteration sorted list
+    node_count = []
+    weight_count = []
+    for node in range(nx.number_of_nodes(g)):
+        tmp1, tmp2 = IndependentCascadingModel(g,[node],p,mc)
+        tmp1 = [tmp1]
+        tmp2 = [tmp2]
+        node_count += tmp1
+        weight_count += tmp2
+
+    # Create the sorted list of nodes and their marginal gain 
+    Q = sorted(zip(range(nx.number_of_nodes(g)), node_count, weight_count), key=lambda x: (x[1], x[2]), reverse=True)
+
+    # Select the first node and remove from candidate list
+    S, spread = [Q[0][0]], Q[0][1]
+    NODE_COUNT = [Q[0][1]]
+    WEIGHT_COUNT = [Q[0][2]]
+    Q = Q[1:]
+    
+    # ---- Step 2: Find the next k-1 nodes using the list-sorting procedure
+    
+    for _ in range(k-1):    
+
+        check = False
+        while not check:
+            
+            # Recalculate spread of top node
+            current = Q[0][0]
+            
+            # Evaluate the spread function and store the marginal gain in the list
+            tmp1, tmp2 = IndependentCascadingModel(g,S+[current],p,mc)
+            Q[0] = (current, tmp1 - spread, tmp2)
+
+            # Re-sort the list
+            Q = sorted(Q, key = lambda x: (x[1], x[2]), reverse = True)
 
             # Check if previous top node stayed on top after the sort
             check = (Q[0][0] == current)
@@ -263,36 +270,38 @@ def celf_nodes_count(g, k, p=0.1, mc=1000):
         # Select the next node
         spread += Q[0][1]
         S.append(Q[0][0])
-        SPREAD.append(spread)
+        NODE_COUNT.append(spread)
+        WEIGHT_COUNT.append(Q[0][2])
 
         # Remove the selected node from the list
         Q = Q[1:]
 
-    return(S,SPREAD)
-
+    return(S, NODE_COUNT, WEIGHT_COUNT)
 
 G = CreateGraph()
-"""
+
 print("\nAlgorith 1, Maximizing Number of Nodes (All Edges with Same Weights):")
 print("---------------------------------------------------------------------")
 print("Greedy:")
 optimal_seed_set, spread  = greedy_nodes_count (G, 10, p = 0.1, mc = 1000)
 print("\tOptimal Seed Set: " + str(optimal_seed_set))
 print("\tSpread: " + str(spread))
-"""
+
 print("CELF:")
-optimal_seed_set, spread = celf_nodes_count (G, 10, p = 0.1, mc = 1000)
+optimal_seed_set, node_count, weight_count = celf_nodes_count (G, 10, p = 0.1, mc = 1000)
 print("\tOptimal Seed Set: " + str(optimal_seed_set))
-print("\tSpread: " + str(spread))
-"""
+print("\tMean Influenced Nodes: " + str(node_count))
+print("\tMean Influence Weight: " + str(weight_count))
+
 print("\nAlgorith 2, Maximizing Sum of Influence Weights (All Edges with Different Weights):")
 print("-----------------------------------------------------------------------------------")
 print("Greedy:")
 optimal_seed_set, spread  = greedy_edges_weight (G, 10, p = 0.1, mc = 1000)
 print("\tOptimal Seed Set: " + str(optimal_seed_set))
 print("\tSpread: " + str(spread))
-"""
+
 print("CELF:")
-optimal_seed_set, spread, _ = celf_edges_weight (G, 10, p = 0.1, mc = 1000)
+optimal_seed_set, node_count, weight_count = celf_edges_weight (G, 10, p = 0.1, mc = 1000)
 print("\tOptimal Seed Set: " + str(optimal_seed_set))
-print("\tSpread: " + str(spread))
+print("\tMean Influenced Nodes: " + str(node_count))
+print("\tMean Influence Weight: " + str(weight_count))
