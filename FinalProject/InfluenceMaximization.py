@@ -281,7 +281,7 @@ print("\tOptimal Seed Set: " + str(optimal_seed_set))
 print("\tSpread: " + str(spread))
 """
 print("CELF:")
-optimal_seed_set, spread, _ = celf_nodes_count (G, 10, p = 0.1, mc = 1000)
+optimal_seed_set, spread = celf_nodes_count (G, 10, p = 0.1, mc = 1000)
 print("\tOptimal Seed Set: " + str(optimal_seed_set))
 print("\tSpread: " + str(spread))
 """
