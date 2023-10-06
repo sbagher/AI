@@ -6,7 +6,7 @@
 Description:
    Diffusion Model: Independent Cascading Model
    Maximization Algorithm: greedy & celf
-   Graph: directed Erdös–Rényi graph (n=100, m=300)
+   Graph: directed random graph (n=100, m=300)
    k: 10
    Objective: Influence Maximization for 10 optimal seed set
 """
@@ -286,7 +286,7 @@ def celf_nodes_count(g, k, p=0.1, mc=1000):
 
 G = CreateGraph()
 
-print("\nAlgorith 1, Maximizing Number of Nodes (All Edges with Same Weights):")
+print("\nAlgorithm 1, Maximizing Number of Nodes (All Edges with Same Weights):")
 print("---------------------------------------------------------------------")
 print("Greedy:")
 optimal_seed_set, node_count_mean, weight_count_mean  = greedy_nodes_count (G, 10, p = 0.1, mc = 1000)
@@ -300,7 +300,7 @@ print("\tOptimal Seed Set: " + str(optimal_seed_set))
 print("\tMean Influenced Nodes: " + str(node_count_mean))
 print("\tMean Influence Weight: " + str(weight_count_mean))
 
-print("\nAlgorith 2, Maximizing Sum of Influence Weights (All Edges with Different Weights):")
+print("\nAlgorithm 2, Maximizing Sum of Influence Weights (All Edges with Different Weights):")
 print("-----------------------------------------------------------------------------------")
 print("Greedy:")
 optimal_seed_set, node_count_mean, weight_count_mean  = greedy_edges_weight (G, 10, p = 0.1, mc = 1000)
