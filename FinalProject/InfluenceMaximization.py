@@ -26,7 +26,7 @@ def CreateGraph():
 
     return g
 
-def IndependentCascadingModel (g, S, p=0.5, mc=1000):
+def IndependentCascadingModel (g, S, p=0.1, mc=1000):
     """
     Input:
         g : graph
