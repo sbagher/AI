@@ -3,9 +3,9 @@
 # Class: AI Applications in Social Networks
 # Assignment: Problem: 47, Chapter: 07, Book: "Practical Social Network Analysis with Python"
 
-
 import networkx as nx
 import matplotlib.pyplot as plt
+import numpy as np
 
 print('Problem: 47, Chapter: 07, Book: "Practical Social Network Analysis with Python"\n')
 print('Calculate the count and fraction of triads of each type in this network.\n')
@@ -62,7 +62,7 @@ for node in g.nodes:
 
 t = t0 + t1 + t2 + t3
 print ("Ti\t\t|Ti|\t\tp(Ti)")
-print (f"T3+++\t\t{t3}\t\t{t3/t}")
-print (f"T2++-\t\t{t2}\t\t{t2/t}")
-print (f"T1+--\t\t{t1}\t\t{t1/t}")
-print (f"T0---\t\t{t0}\t\t{t0/t}")
+print (f"T3+++\t\t{t3}\t\t{np.round(t3/t,3)}")
+print (f"T2++-\t\t{t2}\t\t{np.round(t2/t,3)}")
+print (f"T1+--\t\t{t1}\t\t{np.round(t1/t,3)}")
+print (f"T0---\t\t{t0}\t\t{np.round(t0/t,3)}")
