@@ -23,7 +23,9 @@ for u, v, keys, sign in g.edges(data="sign", keys=True):
         p += 1
     else:
         n += 1
-t = p + n
 
-print (f"fraction of positive edges:{p/t}")
-print (f"fraction of negative edges:{n/t}")
+t = p + n
+p, n = p/t, n/t
+print (f"fraction of positive edges:{p}")
+print (f"fraction of negative edges:{n}")
+
