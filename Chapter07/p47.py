@@ -59,3 +59,10 @@ for node in g.nodes:
                                 else:
                                     t0 += 1
         s = s[i:]            
+
+t = t0 + t1 + t2 + t3
+print ("Ti\t\t|Ti|\t\tp(Ti)")
+print (f"T3+++\t\t{t3}\t\t{t3/t}")
+print (f"T2++-\t\t{t2}\t\t{t2/t}")
+print (f"T1+--\t\t{t1}\t\t{t1/t}")
+print (f"T0---\t\t{t0}\t\t{t0/t}")
