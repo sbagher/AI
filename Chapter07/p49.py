@@ -15,4 +15,9 @@ complete network on 10 nodes. For each edge, choose a sign with uniform probabil
 Run this dynamic process for a million iterations. Repeat this process 100 times.\n\
 What fraction of these networks are balanced?')
 
-g = nx.complete_graph(10)
+g = nx.complete_graph(10, nx.Graph())
+g.remove_edges_from(nx.selfloop_edges(g))
+ec = g.number_of_edges()
+for _ in range(100):
+    for p in np.random.uniform(0,1,1000000):
+        s = np.random.uniform(0,1,ec) < p
