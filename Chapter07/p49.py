@@ -22,6 +22,7 @@ ec = len(edges)
 
 unbalanced = 0
 for _ in range(100):
+    sp = []
     for p in np.random.uniform(0,1,1000000):
         sp = np.random.uniform(0,1,ec) < p
 
