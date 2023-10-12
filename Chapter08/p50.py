@@ -9,3 +9,5 @@ import numpy as np
 
 print('Problem: 50, Chapter: 08, Book: "Practical Social Network Analysis with Python"\n')
 print('An Erdös-Rényi undirected random graph with 10000 nodes and 100000 edges.')
+
+g1 = nx.gnm_random_graph(10000, 100000, seed=10, directed=False)
