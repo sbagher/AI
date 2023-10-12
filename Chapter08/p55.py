@@ -8,4 +8,4 @@ import networkx as nx
 import numpy as np
 
 print('Problem: 55, Chapter: 08, Book: "Practical Social Network Analysis with Python"\n')
-print()
+print('For this threshold vector, compute the histogram N.')
