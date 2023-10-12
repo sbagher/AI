@@ -8,4 +8,5 @@ import networkx as nx
 import numpy as np
 
 print('Problem: 52, Chapter: 08, Book: "Practical Social Network Analysis with Python"\n')
-print()
+print('Perform these configurations and iterations, and compute who wins in the first\n\
+graph, and by how much? Similarly, compute the votes for the second graph.')
