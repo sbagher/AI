@@ -8,4 +8,5 @@ import networkx as nx
 import numpy as np
 
 print('Problem: 50, Chapter: 08, Book: "Practical Social Network Analysis with Python"\n')
-print()
+print('Generate the following two graphs with random seed of 10:\n\
+An Erdös-Rényi undirected random graph with 10000 nodes and 100000 edges.')
