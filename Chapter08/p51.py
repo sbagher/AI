@@ -8,4 +8,4 @@ import networkx as nx
 import numpy as np
 
 print('Problem: 51, Chapter: 08, Book: "Practical Social Network Analysis with Python"\n')
-print()
+print('A preferential attachment graph with 10000 nodes with out-degree 10.')
