@@ -4,6 +4,7 @@
 # Assignment: Problem: 56, Chapter: 08, Book: "Practical Social Network Analysis with Python"
 
 from collections import Counter
+import matplotlib.pyplot as plt
 
 print('Problem: 56, Chapter: 08, Book: "Practical Social Network Analysis with Python"\n')
 print('Using the N calculated in Problem 55, compute its cumulative histogram [N] =\n\
@@ -27,7 +28,16 @@ for i in range (max(C.keys())+1):
 NC = [N[0]]
 for i in range (1, max(C.keys())+1):
     NC.append(NC[i-1]+N[i])
-NC = NC[1:]
 
 print (f'N = {N}')
 print (f'[N] = {NC}')
+print (f'The ﬁnal number of rioters = {NC[-1]}')
+
+plt.plot(range (max(C.keys())+1), N, color ='green', linewidth=1, label='Number of Rioters')
+plt.plot(range (max(C.keys())+1), NC, color ='blue', linewidth=1, label='Cumulative Number of Rioters')
+plt.title('(Number of Rioters) and (Cumulative Number of Rioters)')
+plt.xlabel('T (threshold)')
+plt.ylabel('Number of Rioters')
+plt.legend()
+
+plt.show()
