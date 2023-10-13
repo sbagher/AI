@@ -25,14 +25,19 @@ def election1(g, graph_type, k):
             v[i] = 1
         elif t in c2:
             v[i] = 2
-    # Spending money for voters
-    for i in range(3000, 3000+k*10):
-        v[i] = 1
+    # Spending money for k highest degree voters
+    hd = g.degree()
+    hd = sorted(hd, key=lambda x: (x[1], -x[0]), reverse=True)
+    hd = hd[:k]
+    hd = [n for n, _ in hd]
+    for n in hd:
+        v[int(n)] = 1
+
     for _ in range (10):
         v3 = 1
         for n in sorted(g.nodes()):
-            # Spending money for voters
-            if n >= 3000 and n < (3000+k*10):
+            # Spending money for k highest degree voters
+            if n in hd:
                 continue
             t = n % 10
             if t in c0:
@@ -91,18 +96,21 @@ def election2(g, graph_type, k):
             v[0][i] = 2
             v[1][i] = 2
 
-    # Spending money for voters
-    for i in range(3000, 3000+k*10):
-        v[0][i] = 1
-        v[1][i] = 1
-
+    # Spending money for k highest degree voters
+    hd = g.degree()
+    hd = sorted(hd, key=lambda x: (x[1], -x[0]), reverse=True)
+    hd = hd[:k]
+    hd = [n for n, _ in hd]
+    for n in hd:
+        v[0][int(n)] = 1
+        v[1][int(n)] = 1
     ci = 0 # current_itteration
     ni = 1 # next_itteration
     for _ in range (10):
         v3 = 1
         for n in sorted(g.nodes()):
-            # Spending money for voters
-            if n >= 3000 and n < (3000+k*10):
+            # Spending money for k highest degree voters
+            if n in hd:
                 continue
             t = n % 10
             if t in c0:
