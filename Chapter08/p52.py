@@ -11,9 +11,6 @@ print('Problem: 52, Chapter: 08, Book: "Practical Social Network Analysis with P
 print('Perform these configurations and iterations, and compute who wins in the first\n\
 graph, and by how much? Similarly, compute the votes for the second graph.')
 
-g1 = nx.gnm_random_graph(10000, 100000, seed=10, directed=False)
-g2 = nx.barabasi_albert_graph(10000,10,10)
-
 def election1(g, graph_type):
     c0 = {8,9}
     c1 = {0,2,4,6}
@@ -135,6 +132,9 @@ def election2(g, graph_type):
         print (f"Difference:{v2-v1}")
 
     return
+
+g1 = nx.gnm_random_graph(10000, 100000, seed=10, directed=False)
+g2 = nx.barabasi_albert_graph(10000,10,10)
 
 election1(g1, "Erdös-Rényi Graph")
 election1(g2, "Preferential Attachment Graph")
