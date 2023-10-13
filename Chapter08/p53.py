@@ -6,6 +6,7 @@
 
 import networkx as nx
 import numpy as np
+import matplotlib.pyplot as plt
 
 print('Problem: 53, Chapter: 08, Book: "Practical Social Network Analysis with Python"\n')
 print('Simulate the effect of spending on the two graphs. First, read in the two graphs\n\
@@ -13,10 +14,7 @@ again and assign the initial configurations as before.Now, before the decision p
 you purchase Rs. k of ads and go through the decision process of counting votes.')
 
 
-g1 = nx.gnm_random_graph(10000, 100000, seed=10, directed=False)
-g2 = nx.barabasi_albert_graph(10000,10,10)
-
-def election1(g, graph_type):
+def election1(g, graph_type, k):
     c0 = {8,9}
     c1 = {0,2,4,6}
     c2 = {1,3,5,7}
@@ -27,9 +25,15 @@ def election1(g, graph_type):
             v[i] = 1
         elif t in c2:
             v[i] = 2
+    # Spending money for voters
+    for i in range(3000, 3000+k*10):
+        v[i] = 1
     for _ in range (10):
         v3 = 1
         for n in sorted(g.nodes()):
+            # Spending money for voters
+            if n >= 3000 and n < (3000+k*10):
+                continue
             t = n % 10
             if t in c0:
                 v1 , v2 = 0, 0
@@ -71,9 +75,9 @@ def election1(g, graph_type):
         print (f"Rival Votes:{v2}")
         print (f"Difference:{v2-v1}")
 
-    return
+    return v1, v2
 
-def election2(g, graph_type):
+def election2(g, graph_type, k):
     c0 = {8,9}
     c1 = {0,2,4,6}
     c2 = {1,3,5,7}
@@ -87,11 +91,19 @@ def election2(g, graph_type):
             v[0][i] = 2
             v[1][i] = 2
 
+    # Spending money for voters
+    for i in range(3000, 3000+k*10):
+        v[0][i] = 1
+        v[1][i] = 1
+
     ci = 0 # current_itteration
     ni = 1 # next_itteration
     for _ in range (10):
         v3 = 1
         for n in sorted(g.nodes()):
+            # Spending money for voters
+            if n >= 3000 and n < (3000+k*10):
+                continue
             t = n % 10
             if t in c0:
                 v1, v2 = 0, 0
@@ -136,9 +148,38 @@ def election2(g, graph_type):
         print (f"Rival Votes:{v2}")
         print (f"Difference:{v2-v1}")
 
-    return
+    return v1, v2
 
-election1(g1, "Erdös-Rényi Graph")
-election1(g2, "Preferential Attachment Graph")
-election2(g1, "Erdös-Rényi Graph")
-election2(g2, "Preferential Attachment Graph")
+g1 = nx.gnm_random_graph(10000, 100000, seed=10, directed=False)
+g2 = nx.barabasi_albert_graph(10000,10,10)
+
+e1g1, e1g2, e2g1, e2g2 = [], [], [], []
+
+for k in range (0, 10):
+    v1, _ = election1(g1, "Erdös-Rényi Graph", k)
+    e1g1.append(v1)
+    v1, _ = election1(g2, "Preferential Attachment Graph", k)
+    e1g2.append(v1)
+    v1, _ = election2(g1, "Erdös-Rényi Graph", k)
+    e2g1.append(v1)
+    v1, _ = election2(g2, "Preferential Attachment Graph", k)
+    e2g2.append(v1)
+
+plt.rcParams["figure.figsize"] = (15,5)
+plt.subplot(1, 2, 1)
+plt.plot(range (0, 10000, 1000), e1g1, color ='green', linewidth=1, label='Erdös-Rényi Graph')
+plt.plot(range (0, 10000, 1000), e1g2, color ='blue', linewidth=1, label='Preferential Attachment Graph')
+plt.title('Election Type 1')
+plt.xlabel('K (the amount you spend)')
+plt.ylabel('number of votes you win')
+plt.legend()
+
+plt.subplot(1, 2, 2)
+plt.plot(range (0, 10000, 1000), e2g1, color ='green', linewidth=1, label='Erdös-Rényi Graph')
+plt.plot(range (0, 10000, 1000), e2g2, color ='blue', linewidth=1, label='Preferential Attachment Graph')
+plt.title('Election Type 2')
+plt.xlabel('K (the amount you spend)')
+plt.ylabel('number of votes you win')
+plt.legend()
+
+plt.show()
