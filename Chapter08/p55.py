@@ -3,7 +3,6 @@
 # Class: AI Applications in Social Networks
 # Assignment: Problem: 55, Chapter: 08, Book: "Practical Social Network Analysis with Python"
 
-
 from collections import Counter
 
 print('Problem: 55, Chapter: 08, Book: "Practical Social Network Analysis with Python"\n')
