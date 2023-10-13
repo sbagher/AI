@@ -23,10 +23,11 @@ for i in range (max(C.keys())+1):
     else:
         N.append(0)
 
-NS = [N[0]]
+# cumulative
+NC = [N[0]]
 for i in range (1, max(C.keys())+1):
-    NS.append(NS[i-1]+N[i])
-NS = NS[1:]
+    NC.append(NC[i-1]+N[i])
+NC = NC[1:]
 
 print (f'N = {N}')
-print (f'NS = {NS}')
+print (f'[N] = {NC}')
