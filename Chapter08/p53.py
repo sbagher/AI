@@ -13,7 +13,6 @@ print('Simulate the effect of spending on the two graphs. First, read in the two
 again and assign the initial configurations as before.Now, before the decision process,\n\
 you purchase Rs. k of ads and go through the decision process of counting votes.')
 
-
 def election1(g, graph_type, k):
     c0 = {8,9}
     c1 = {0,2,4,6}
